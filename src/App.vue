@@ -106,7 +106,7 @@ export default {
 			this.udpate_results()
 		},
 		udpate_results () {
-			console.log('update')
+			// console.log('update results')
 			this.results.mobility_val = this.calc_diff('mobility_val')
 			this.results.park_val = this.calc_diff('park_val')
 			this.results.school_val = this.calc_diff('school_val')

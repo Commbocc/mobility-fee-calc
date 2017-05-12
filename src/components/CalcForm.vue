@@ -5,7 +5,7 @@
 		</header>
 
 		<fieldset class="panel-body">
-			<select-field label="Hosuing Type" tooltip="Lorem Ipsum" v-model="housing_type" index="housing_type"></select-field>
+			<select-field label="Hosuing Type" v-model="housing_type" index="housing_type"></select-field>
 
 			<select-field label="Mobility Assessment District" v-model="mobility_assessment_dist" index="mobility_assessment_dist"></select-field>
 

@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "esri-loader": "^1.0.0",
     "vue": "^2.2.6",
     "vue-router": "^2.3.1"
   },

@@ -4,7 +4,7 @@
 		<span v-if="tooltip" class="title-tooltip small" :title="tooltip">
 			<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 		</span>
-		<select class="form-control" v-model="internalValue">
+		<select class="form-control" v-model="$parent[index]">
 			<option selected :value="false">N/A</option>
 			<option v-for="option in options[index]" :value="option">{{ option }}</option>
 		</select>
@@ -14,10 +14,9 @@
 <script>
 export default {
 	name: 'select-field',
-	props: ['label', 'value', 'tooltip', 'index'],
+	props: ['label', 'tooltip', 'index'],
 	data: function() {
 		return {
-			internalValue: '',
 			options: {
 				housing_type: [
 					'Single Family Detached',
@@ -50,14 +49,6 @@ export default {
 				]
 			}
 		}
-	},
-	watch: {
-		'internalValue': function() {
-			this.$emit('input', this.internalValue)
-		}
-	},
-	created: function() {
-		this.internalValue = this.value
 	}
 }
 </script>

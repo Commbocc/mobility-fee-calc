@@ -54,6 +54,11 @@
 			</table>
 		</section>
 
+		<footer class="panel-footer small">
+			<em>
+				{{ disclaimer }}
+			</em>
+		</footer>
 	</div>
 </template>
 
@@ -62,6 +67,7 @@ export default {
 	name: 'results',
 	data () {
 		return {
+			disclaimer: 'All fees provided on this calculator are only estimates to assist in planning, actual fees will be assessed on building permits based on application data provided.'
 		}
 	},
 	methods: {

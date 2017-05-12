@@ -29,7 +29,7 @@ import SelectField from '@/components/SelectField'
 
 export default {
 	name: 'calc-form',
-	props: ['title'],
+	props: ['title', 'mobilityDistrict', 'schoolDistrict'],
 	data () {
 		return {
 			housing_type: false,
@@ -62,9 +62,13 @@ export default {
 		}
 	},
 	watch: {
+		'mobilityDistrict': function() {
+			this.mobility_assessment_dist = this.mobilityDistrict
+		},
+		'schoolDistrict': function() {
+			this.park_schools_fee_zone = this.schoolDistrict
+		},
 		computedProperty () {
-			// console.log('computedProperty watched')
-
 			// calc_mobility
 			if ( this.housing_type && this.mobility_assessment_dist && this.square_footage ) {
 				var housing_type = _.findWhere(MobilityData, {type: this.housing_type})
@@ -73,7 +77,6 @@ export default {
 			} else {
 				this.prices.mobility_val = 0
 			}
-
 			// calc_park
 			if ( this.housing_type && this.park_schools_fee_zone && this.bedrooms ) {
 				var housing_type = _.findWhere(ParkData, {type: this.housing_type})
@@ -82,23 +85,20 @@ export default {
 			} else {
 				this.prices.park_val = 0
 			}
-
 			// calc_school
 			if ( this.square_footage ) {
 				this.prices.school_val = SchoolData[this.square_footage]
 			} else {
 				this.prices.school_val = 0
 			}
-
 			// calc_fire
 			if ( this.housing_type || this.mobility_assessment_dist || this.park_schools_fee_zone || this.bedrooms || this.square_footage ) {
 				this.prices.fire_val = 48.66
 			} else {
 				this.prices.fire_val = 0
 			}
-
+			// submit
 			this.$emit('submit', this.prices)
-
 		}
 	}
 }

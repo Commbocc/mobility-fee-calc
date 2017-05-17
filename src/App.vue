@@ -7,11 +7,13 @@
 			</p>
 		</address-form>
 
+		<alert v-for="alert in $store.state.alerts" :item="alert" :key="alert.id"></alert>
+
 		<div class="form-group">
-			<label>{{ new_constructon_label }}</label>
+			<label>{{ const_label }}</label>
 			<div class="checkbox">
-				<label for="existing-home">
-					<input type="checkbox" id="existing-home" v-model="new_constructon"> {{ new_constructon_desc }}
+				<label>
+					<input type="checkbox" v-model="$store.state.is_new_construction"> {{ const_desc }}
 				</label>
 			</div>
 		</div>
@@ -26,7 +28,7 @@
 				title="New Home"></calc-form>
 
 				<calc-form
-				v-if="!new_constructon"
+				v-if="!$store.state.is_new_construction"
 				:mobility-district="mobility_district"
 				:school-district="school_district"
 				v-on:submit="existing_calc_form_submitted"
@@ -34,7 +36,7 @@
 
 			</div>
 			<div class="col-md-5">
-				<results :new-calc-form-data="newCalcFormData" :existing-calc-form-data="existingCalcFormData"></results>
+				<results></results>
 			</div>
 		</div>
 
@@ -47,15 +49,16 @@
 import AddressForm from '@/components/AddressForm'
 import CalcForm from '@/components/CalcForm'
 import Results from '@/components/Results'
+import Alert from '@/components/Alert';
 
 export default {
 	name: 'index',
 	data () {
 		return {
 			address_form_desc: 'Your address will be used to populate the "Mobility Assessment District" and "Park/Schools Impact Fee Zone" fields below.',
-			new_constructon_label: 'New Construction',
-			new_constructon_desc: 'This estimate is for a site with no existing home.',
-			new_constructon: false,
+			const_label: 'New Construction',
+			const_desc: 'This estimate is for a site with no existing home.',
+
 			mobility_district: null,
 			school_district: null,
 
@@ -84,9 +87,10 @@ export default {
 		'address-form': AddressForm,
 		'calc-form': CalcForm,
 		'results': Results,
+		'alert': Alert,
 	},
 	watch: {
-		'new_constructon': function() {
+		'$store.state.is_new_construction': function() {
 			this.udpate_results()
 		}
 	},
@@ -113,19 +117,17 @@ export default {
 		},
 		udpate_results () {
 			// console.log('update results')
-			this.results.mobility_val = this.calc_diff('mobility_val')
-			this.results.park_val = this.calc_diff('park_val')
-			this.results.school_val = this.calc_diff('school_val')
-			this.results.fire_val = this.calc_diff('fire_val')
 			this.results.total = [
-				this.results.mobility_val,
-				this.results.park_val,
-				this.results.school_val,
-				this.results.fire_val
+				this.calc_diff('mobility_val'),
+				this.calc_diff('park_val'),
+				this.calc_diff('school_val'),
+				this.calc_diff('fire_val')
 			].reduce(function(acc, val) {return acc + val;}, 0);
 		},
 		calc_diff (index) {
-			return (!this.new_constructon) ? this.newCalcFormData[index] - this.existingCalcFormData[index] : this.newCalcFormData[index]
+			var difference = (!this.$store.state.is_new_construction) ? this.newCalcFormData[index] - this.existingCalcFormData[index] : this.newCalcFormData[index]
+			this.$set(this.results, index, difference)
+			return difference
 		}
 	}
 }

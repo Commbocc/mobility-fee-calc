@@ -4,6 +4,8 @@
 			<h4 class="panel-title">{{ title }}</h4>
 		</header>
 
+		<!-- <pre>{{ $data }}</pre> -->
+
 		<fieldset class="panel-body">
 			<select-field label="Hosuing Type" v-model="housing_type" index="housing_type"></select-field>
 

@@ -45,12 +45,12 @@ export default {
 			}
 		},
 		item_index () {
-			return this.$parent.alerts.indexOf(this.item)
+			return this.$store.state.alerts.indexOf(this.item)
 		}
 	},
 	methods: {
 		remove () {
-			this.$parent.alerts.splice(this.item_index, 1)
+			this.$store.state.alerts.splice(this.item_index, 1)
 		}
 	}
 }

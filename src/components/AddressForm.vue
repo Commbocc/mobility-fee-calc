@@ -25,8 +25,6 @@
 			</div>
 		</fieldset>
 
-		<alert v-for="alert in alerts" :item="alert" :key="alert.key"></alert>
-
 		<!-- <pre>{{ $data }}</pre> -->
 
 	</form>
@@ -34,7 +32,6 @@
 
 <script>
 import * as esriLoader from 'esri-loader';
-import Alert from '@/components/Alert';
 
 String.prototype.formatDistrict = function() {
 	return this.charAt(0).toUpperCase() + this.toLowerCase().slice(1);
@@ -53,20 +50,14 @@ export default {
 			districts: {
 				mobility: null,
 				school: null
-			},
-
-			alerts: []
+			}
 		}
-	},
-	components: {
-		'alert': Alert
 	},
 	methods: {
 		reset_form () {
-			this.address_input = ''
-			this.reset_enabled = false
-			this.$emit('reset')
-			// this.$router.push('/')
+			// this.address_input = ''
+			// this.reset_enabled = false
+			// this.$emit('reset')
 			location.reload()
 		},
 		find_address_geo () {
@@ -92,11 +83,7 @@ export default {
 					this.get_districts()
 				}).otherwise( (err) => {
 					// console.log('error finding address')
-					this.alerts.push({
-						title: 'Address Not Found',
-						msg: 'Please confirm the address and search again. If you feel this is an error, please contact the <a href="http://hcflgov.net/government/departments/customer">Customer Service Center</a>.',
-						class: 'alert-warning'
-					})
+					this.$store.commit('addAlert', 'address-not-found')
 					// that.is_map_shown = true
 					// that.is_loading = false
 				});
@@ -119,11 +106,7 @@ export default {
 					this.$emit('mobility-district-set', this.districts.mobility)
 				}).otherwise( (err) => {
 					// console.log('error getting mobility district')
-					this.alerts.push({
-						title: 'Mobility Assessment District',
-						msg: 'A <em>Mobility Assessment District</em> could not be determined.',
-						class: 'alert-warning'
-					})
+					this.$store.commit('addAlert', 'no-mobility-dist')
 				})
 
 				var schoolDistQueryTask = new QueryTask({
@@ -134,11 +117,7 @@ export default {
 					this.$emit('school-district-set', this.districts.school)
 				}).otherwise( (err) => {
 					// console.log('error getting school district')
-					this.alerts.push({
-						title: 'Park/Schools Impact Fee Zone',
-						msg: 'A <em>Park/Schools Impact Fee Zone</em> could not be determined.',
-						class: 'alert-warning'
-					})
+					this.$store.commit('addAlert', 'no-school-dist')
 				})
 			})
 		}

@@ -7,7 +7,7 @@
 		<fieldset class="panel-body">
 
 			<div class="form-group">
-				<label>Hosuing Type</label>
+				<label>Housing Type</label>
 				<!-- <span class="title-tooltip small" :title="tooltip"> -->
 				<!-- <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> -->
 				<!-- </span> -->

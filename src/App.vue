@@ -19,27 +19,22 @@
 		</div>
 
 		<div class="row">
-			<div class="col-md-7">
-
+			<div class="col-md-6">
 				<calc-form
-				:mobility-district="mobility_district"
-				:school-district="school_district"
 				v-on:submit="new_calc_form_submitted"
 				title="New Home"></calc-form>
 
+			</div>
+			<div class="col-md-6">
 				<calc-form
 				v-if="!$store.state.is_new_construction"
-				:mobility-district="mobility_district"
-				:school-district="school_district"
 				v-on:submit="existing_calc_form_submitted"
 				title="Existing Home"></calc-form>
-
 			</div>
-			<div class="col-md-5">
+			<div class="col-md-6" :class="offsetResultsClass">
 				<results></results>
 			</div>
 		</div>
-
 		<!-- <router-view></router-view> -->
 
 	</div>
@@ -92,6 +87,11 @@ export default {
 	watch: {
 		'$store.state.is_new_construction': function() {
 			this.udpate_results()
+		}
+	},
+	computed: {
+		offsetResultsClass () {
+			return (!this.$store.state.is_new_construction) ? 'col-md-offset-3' : null
 		}
 	},
 	methods: {

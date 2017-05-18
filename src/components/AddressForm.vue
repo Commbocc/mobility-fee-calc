@@ -102,10 +102,11 @@ export default {
 					url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/DSD_Viewer_Services/Mobility_Fees/MapServer/0"
 				})
 				mobilityDistQueryTask.execute(query).then( (result) => {
+					// console.log(result.features[0])
 					this.districts.mobility = result.features[0].attributes['DATA'].formatDistrict()
-					this.$emit('mobility-district-set', this.districts.mobility)
+					this.$store.state.mobility_assessment_dist = this.districts.mobility
 				}).otherwise( (err) => {
-					// console.log('error getting mobility district')
+					// console.error('error getting mobility district')
 					this.$store.commit('addAlert', 'no-mobility-dist')
 				})
 
@@ -113,10 +114,11 @@ export default {
 					url: "https://maps.hillsboroughcounty.org/arcgis/rest/services/InfoLayers/infoLayers/MapServer/3"
 				})
 				schoolDistQueryTask.execute(query).then( (result) => {
+					// console.log(result.features[0])
 					this.districts.school = result.features[0].attributes['ZONE'].formatDistrict()
-					this.$emit('school-district-set', this.districts.school)
+					this.$store.state.park_schools_fee_zone = this.districts.school
 				}).otherwise( (err) => {
-					// console.log('error getting school district')
+					// console.error('error getting school district')
 					this.$store.commit('addAlert', 'no-school-dist')
 				})
 			})

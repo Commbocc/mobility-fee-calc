@@ -20,11 +20,6 @@
 export default {
 	name: 'alert',
 	props: ['item'],
-	data () {
-		return {
-			msg: 'hi'
-		}
-	},
 	computed: {
 		alert_class () {
 			return this.item.class || 'alert-info'

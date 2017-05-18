@@ -4,18 +4,50 @@
 			<h4 class="panel-title">{{ title }}</h4>
 		</header>
 
-		<!-- <pre>{{ $data }}</pre> -->
-
 		<fieldset class="panel-body">
-			<select-field label="Hosuing Type" v-model="housing_type" index="housing_type"></select-field>
 
-			<select-field label="Mobility Assessment District" v-model="mobility_assessment_dist" index="mobility_assessment_dist"></select-field>
+			<div class="form-group">
+				<label>Hosuing Type</label>
+				<!-- <span class="title-tooltip small" :title="tooltip"> -->
+				<!-- <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> -->
+				<!-- </span> -->
+				<select class="form-control" v-model="housing_type">
+					<option selected :value="false">N/A</option>
+					<option v-for="option in $store.state.selectOptions['housing_type']" :value="option">{{ option }}</option>
+				</select>
+			</div>
 
-			<select-field label="Park/Schools Impact Fee Zone" v-model="park_schools_fee_zone" index="park_schools_fee_zone"></select-field>
+			<div class="form-group">
+				<label>Number of Bedrooms</label>
+				<select class="form-control" v-model="bedrooms">
+					<option selected :value="false">N/A</option>
+					<option v-for="option in $store.state.selectOptions['bedrooms']" :value="option">{{ option }}</option>
+				</select>
+			</div>
 
-			<select-field label="Number of Bedrooms" v-model="bedrooms" index="bedrooms"></select-field>
+			<div class="form-group">
+				<label>Living Area Square Footage Range</label>
+				<select class="form-control" v-model="square_footage">
+					<option selected :value="false">N/A</option>
+					<option v-for="option in $store.state.selectOptions['square_footage']" :value="option">{{ option }}</option>
+				</select>
+			</div>
 
-			<select-field label="Living Area Square Footage Range" v-model="square_footage" index="square_footage"></select-field>
+			<div class="form-group">
+				<label>Mobility Assessment District</label>
+				<select class="form-control" v-model="$store.state.mobility_assessment_dist">
+					<option selected :value="false">N/A</option>
+					<option v-for="option in $store.state.selectOptions['mobility_assessment_dist']" :value="option">{{ option }}</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label>Park/Schools Impact Fee Zone</label>
+				<select class="form-control" v-model="$store.state.park_schools_fee_zone">
+					<option selected :value="false">N/A</option>
+					<option v-for="option in $store.state.selectOptions['park_schools_fee_zone']" :value="option">{{ option }}</option>
+				</select>
+			</div>
 		</fieldset>
 	</form>
 </template>
@@ -27,16 +59,12 @@ import MobilityData from '@/data/mobility.json'
 import ParkData from '@/data/parks.json'
 import SchoolData from '@/data/school.json'
 
-import SelectField from '@/components/SelectField'
-
 export default {
 	name: 'calc-form',
-	props: ['title', 'mobilityDistrict', 'schoolDistrict'],
+	props: ['title'],
 	data () {
 		return {
 			housing_type: false,
-			mobility_assessment_dist: false,
-			park_schools_fee_zone: false,
 			bedrooms: false,
 			square_footage: false,
 
@@ -45,18 +73,15 @@ export default {
 				park_val: 0,
 				school_val: 0,
 				fire_val: 0
-			},
+			}
 		}
-	},
-	components: {
-		'select-field': SelectField
 	},
 	computed: {
 		computedProperty() {
 			return [
 				this.housing_type,
-				this.mobility_assessment_dist,
-				this.park_schools_fee_zone,
+				this.$store.state.mobility_assessment_dist,
+				this.$store.state.park_schools_fee_zone,
 				this.bedrooms,
 				this.square_footage,
 				Date.now()
@@ -64,25 +89,19 @@ export default {
 		}
 	},
 	watch: {
-		'mobilityDistrict': function() {
-			this.mobility_assessment_dist = this.mobilityDistrict
-		},
-		'schoolDistrict': function() {
-			this.park_schools_fee_zone = this.schoolDistrict
-		},
 		computedProperty () {
 			// calc_mobility
-			if ( this.housing_type && this.mobility_assessment_dist && this.square_footage ) {
+			if ( this.housing_type && this.$store.state.mobility_assessment_dist && this.square_footage ) {
 				var housing_type = _.findWhere(MobilityData, {type: this.housing_type})
-				var district = _.findWhere(housing_type['districts'], {type: this.mobility_assessment_dist})
+				var district = _.findWhere(housing_type['districts'], {type: this.$store.state.mobility_assessment_dist})
 				this.prices.mobility_val = district['prices'][this.square_footage]
 			} else {
 				this.prices.mobility_val = 0
 			}
 			// calc_park
-			if ( this.housing_type && this.park_schools_fee_zone && this.bedrooms ) {
+			if ( this.housing_type && this.$store.state.park_schools_fee_zone && this.bedrooms ) {
 				var housing_type = _.findWhere(ParkData, {type: this.housing_type})
-				var zone = _.findWhere(housing_type['zones'], {zone_name: this.park_schools_fee_zone})
+				var zone = _.findWhere(housing_type['zones'], {zone_name: this.$store.state.park_schools_fee_zone})
 				this.prices.park_val = zone['price_by_beds'][this.bedrooms]
 			} else {
 				this.prices.park_val = 0
@@ -94,7 +113,7 @@ export default {
 				this.prices.school_val = 0
 			}
 			// calc_fire
-			if ( this.housing_type || this.mobility_assessment_dist || this.park_schools_fee_zone || this.bedrooms || this.square_footage ) {
+			if ( this.housing_type || this.bedrooms || this.square_footage ) {
 				this.prices.fire_val = 48.66
 			} else {
 				this.prices.fire_val = 0
@@ -109,5 +128,8 @@ export default {
 <style scoped>
 .panel-body > .form-group:last-child {
 	margin-bottom: 0;
+}
+.title-tooltip {
+	cursor: help;
 }
 </style>

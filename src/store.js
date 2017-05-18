@@ -6,11 +6,11 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
 	state: {
 		//
-		mobility_assessment_dist: false,
-		park_schools_fee_zone: false,
+		is_new_construction: true,
 
 		//
-		is_new_construction: false,
+		mobility_assessment_dist: false,
+		park_schools_fee_zone: false,
 
 		//
 		alerts: [],
@@ -33,7 +33,40 @@ export const store = new Vuex.Store({
 				msg: 'A <em>Park/Schools Impact Fee Zone</em> could not be determined.',
 				class: 'alert-warning'
 			}
-		]
+		],
+
+		//
+		selectOptions: {
+			housing_type: [
+				'Single Family Detached',
+				'Mobile Home',
+			],
+			mobility_assessment_dist: [
+				'Urban',
+				'Rural',
+			],
+			park_schools_fee_zone: [
+				'Northwest',
+				'Northeast',
+				'Central',
+				'South',
+			],
+			bedrooms: [
+				1,2,3,4,'5+'
+			],
+			square_footage: [
+				'0-499',
+				'500-749',
+				'750-999',
+				'1000-1249',
+				'1250-1499',
+				'1500-1999',
+				'2000-2499',
+				'2500-2999',
+				'3000-3999',
+				'4000+',
+			]
+		}
 	},
 	actions: {
 

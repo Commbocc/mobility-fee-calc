@@ -1,5 +1,5 @@
 <template>
-	<form id="addr-form" @submit.prevent="find_address_geo()">
+	<form id="addr-form" @submit.prevent="findAddressGeo()">
 
 		<fieldset>
 			<div class="form-group">
@@ -62,7 +62,7 @@ export default {
 			// this.$emit('reset')
 			// location.reload()
 		},
-		find_address_geo () {
+		findAddressGeo () {
 			// console.log('searched')
 			this.reset_enabled = true
 			this.address_input = this.address_input
@@ -82,7 +82,7 @@ export default {
 				}).then( (response) => {
 					this.address_input = response[0].address
 					this.address_geo = response[0].location
-					this.get_districts()
+					this.getDistricts()
 				}).otherwise( (err) => {
 					// console.log('error finding address')
 					this.$store.commit('addAlert', 'address-not-found')
@@ -91,7 +91,7 @@ export default {
 				});
 			})
 		},
-		get_districts () {
+		getDistricts () {
 			esriLoader.dojoRequire([
 				"esri/tasks/QueryTask",
 				"esri/tasks/support/Query"

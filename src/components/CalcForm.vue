@@ -61,7 +61,7 @@ import SchoolData from '@/data/school.json'
 
 export default {
 	name: 'calc-form',
-	props: ['title'],
+	props: ['nId','title'],
 	data () {
 		return {
 			housing_type: false,
@@ -118,8 +118,11 @@ export default {
 			} else {
 				this.prices.fire_val = 0
 			}
-			// submit
-			this.$emit('submit', this.prices)
+			// dispatch action
+			this.$store.dispatch('updateCalcModule', {
+				nId: this.nId,
+				prices: this.prices
+			})
 		}
 	}
 }

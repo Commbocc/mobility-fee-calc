@@ -15,7 +15,7 @@
 							Mobility Amount
 						</th>
 						<td class="text-right" width="10">
-							{{ currency($parent.results.mobility_val) }}
+							{{ currency($store.state.results.mobility_val) }}
 						</td>
 					</tr>
 					<tr>
@@ -23,7 +23,7 @@
 							Park Amount
 						</th>
 						<td class="text-right">
-							{{ currency($parent.results.park_val) }}
+							{{ currency($store.state.results.park_val) }}
 						</td>
 					</tr>
 					<tr>
@@ -31,7 +31,7 @@
 							School Amount
 						</th>
 						<td class="text-right">
-							{{ currency($parent.results.school_val) }}
+							{{ currency($store.state.results.school_val) }}
 						</td>
 					</tr>
 					<tr>
@@ -39,7 +39,7 @@
 							Fire Amount
 						</th>
 						<td class="text-right">
-							{{ currency($parent.results.fire_val) }}
+							{{ currency($store.state.results.fire_val) }}
 						</td>
 					</tr>
 					<tr>
@@ -47,7 +47,7 @@
 							TOTAL
 						</th>
 						<th class="text-right">
-							{{ currency($parent.results.total) }}
+							{{ currency($store.state.results.total) }}
 						</th>
 					</tr>
 				</tbody>

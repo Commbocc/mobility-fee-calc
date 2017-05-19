@@ -5,6 +5,16 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
 	state: {
+		// results
+		results: {
+			mobility_val: 0,
+			park_val: 0,
+			school_val: 0,
+			fire_val: 0,
+			total: 0
+		},
+		module_prices: { '1':{}, '2':{} },
+
 		//
 		is_new_construction: true,
 
@@ -69,14 +79,36 @@ export const store = new Vuex.Store({
 		}
 	},
 	actions: {
-
+		updateCalcModule (context, data) {
+			context.commit('updateCalcModuleState', data)
+			context.commit('updateResults')
+		}
 	},
 	mutations: {
 		addAlert: (state, id) => {
 			state.alerts.push( state.alertIndex.find(alert => alert.id === id) )
-		}
-	},
-	getters: {
+		},
+		updateCalcModuleState: (state, data) => {
+			Vue.set(state.module_prices, data.nId, data.prices)
+		},
+		updateResults: (state) => {
+			// console.log('update results')
 
+			if (state.is_new_construction) {
+				state.module_prices['2'] = {}
+			}
+
+			Object.keys(state.module_prices['1']).map( (k) => {
+				var total = (state.module_prices['2'][k]) ? (state.module_prices['1'][k] - state.module_prices['2'][k]) : state.module_prices['1'][k]
+				Vue.set(state.results, k, total)
+			})
+
+			state.results.total = [
+				state.results.mobility_val,
+				state.results.park_val,
+				state.results.school_val,
+				state.results.fire_val
+			].reduce(function(acc, val) {return acc + val}, 0)
+		}
 	}
 })

@@ -10,9 +10,9 @@
 					</em>
 				</div>
 				<div class="input-group">
-					<input class="form-control" v-model="address_input" :placeholder="placeholder" autocomplete="off" required :readonly="reset_enabled">
+					<input class="form-control" v-model="address_input" v-bind:placeholder="placeholder" :readonly="reset_enabled" autocomplete="off" required>
 					<span class="input-group-btn">
-						<button v-if="reset_enabled" class="btn btn-warning" type="reset" @click.prevent="reset_form">
+						<button v-if="reset_enabled" @click.prevent="softReset()" class="btn btn-warning" type="button">
 							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 							Reset
 						</button>
@@ -54,16 +54,18 @@ export default {
 		}
 	},
 	methods: {
-		reset_form () {
-			// this.address_input = ''
-			// this.reset_enabled = false
+		softReset () {
+			console.log('soft reset')
+			this.$store.state.alerts = []
+			this.reset_enabled = false
+			this.address_input = ''
 			// this.$emit('reset')
-			location.reload()
+			// location.reload()
 		},
 		find_address_geo () {
 			// console.log('searched')
 			this.reset_enabled = true
-			this.placeholder = this.address_input
+			this.address_input = this.address_input
 
 			esriLoader.dojoRequire([
 				"esri/tasks/Locator",

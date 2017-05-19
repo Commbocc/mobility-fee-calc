@@ -103,12 +103,16 @@ export const store = new Vuex.Store({
 				Vue.set(state.results, k, total)
 			})
 
-			state.results.total = [
-				state.results.mobility_val,
-				state.results.park_val,
-				state.results.school_val,
-				state.results.fire_val
-			].reduce(function(acc, val) {return acc + val}, 0)
+			var positive_values = [
+				'mobility_val',
+				'park_val',
+				'school_val',
+				'fire_val'
+			].map( (k) => {
+				return (state.results[k] >= 0) ? state.results[k] : 0
+			})
+
+			state.results.total = positive_values.reduce(function(acc, val) {return acc + val}, 0)
 		}
 	}
 })

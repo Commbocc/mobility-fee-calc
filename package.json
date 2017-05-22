@@ -11,6 +11,7 @@
     "push-gh": "git subtree push --prefix dist github gh-pages"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "esri-loader": "^1.0.0",
     "vue": "^2.2.6",
     "vue-router": "^2.3.1",

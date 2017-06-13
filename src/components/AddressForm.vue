@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import * as esriLoader from 'esri-loader';
+import * as esriLoader from 'esri-loader'
 
 String.prototype.formatDistrict = function() {
 	return this.charAt(0).toUpperCase() + this.toLowerCase().slice(1);
@@ -124,15 +124,6 @@ export default {
 					this.$store.commit('addAlert', 'no-school-dist')
 				})
 			})
-		}
-	},
-	mounted () {
-		if (!esriLoader.isLoaded()) {
-			esriLoader.bootstrap((err) => {
-				if (err) { console.error(err); }
-			}, {
-				url: 'https://js.arcgis.com/4.3'
-			});
 		}
 	}
 }

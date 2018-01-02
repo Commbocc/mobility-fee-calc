@@ -3,7 +3,12 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import pricing from './modules/pricing'
+
 export const store = new Vuex.Store({
+  modules: {
+    pricing
+  },
 	state: {
 		// results
 		results: {

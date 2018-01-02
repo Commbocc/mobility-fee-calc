@@ -54,10 +54,7 @@
 
 <script>
 import _ from 'underscore'
-
-import MobilityData from '@/data/mobility.json'
-import ParkData from '@/data/parks.json'
-import SchoolData from '@/data/school.json'
+import { mapState } from 'vuex'
 
 export default {
 	name: 'calc-form',
@@ -77,6 +74,12 @@ export default {
 		}
 	},
 	computed: {
+    ...mapState({
+      pricingMobility: state => state.pricing.mobility,
+      pricingPark: state => state.pricing.park,
+      pricingSchool: state => state.pricing.school,
+      pricingFire: state => state.pricing.fire
+    }),
 		computedProperty() {
 			return [
 				this.housing_type,
@@ -92,7 +95,7 @@ export default {
 		computedProperty () {
 			// calc_mobility
 			if ( this.housing_type && this.$store.state.mobility_assessment_dist && this.square_footage ) {
-				var housing_type = _.findWhere(MobilityData, {type: this.housing_type})
+				var housing_type = _.findWhere(this.pricingMobility, {type: this.housing_type})
 				var district = _.findWhere(housing_type['districts'], {type: this.$store.state.mobility_assessment_dist})
 				this.prices.mobility_val = district['prices'][this.square_footage]
 			} else {
@@ -100,21 +103,22 @@ export default {
 			}
 			// calc_park
 			if ( this.housing_type && this.$store.state.park_schools_fee_zone && this.bedrooms ) {
-				var housing_type = _.findWhere(ParkData, {type: this.housing_type})
-				var zone = _.findWhere(housing_type['zones'], {zone_name: this.$store.state.park_schools_fee_zone})
-				this.prices.park_val = zone['price_by_beds'][this.bedrooms]
+				var housing_type = _.findWhere(this.pricingPark, {type: this.housing_type})
+        console.log(housing_type)
+				var zone = _.findWhere(housing_type['zones'], {zoneName: this.$store.state.park_schools_fee_zone})
+				this.prices.park_val = zone['priceByBeds'][this.bedrooms]
 			} else {
 				this.prices.park_val = 0
 			}
 			// calc_school
 			if ( this.square_footage ) {
-				this.prices.school_val = SchoolData[this.square_footage]
+				this.prices.school_val = this.pricingSchool[this.square_footage]
 			} else {
 				this.prices.school_val = 0
 			}
 			// calc_fire
 			if ( this.housing_type || this.bedrooms || this.square_footage ) {
-				this.prices.fire_val = 48.66
+				this.prices.fire_val = this.pricingFire
 			} else {
 				this.prices.fire_val = 0
 			}

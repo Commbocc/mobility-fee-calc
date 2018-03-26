@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 import pricing from './modules/pricing'
 
-export const store = new Vuex.Store({
+export default new Vuex.Store({
   modules: {
     pricing
   },

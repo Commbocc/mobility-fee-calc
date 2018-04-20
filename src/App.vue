@@ -1,13 +1,11 @@
 <template>
   <div id="app">
 
-    <label class="font-weight-bold">Your Address</label>
+    <form is="HcEsriSearchWidget" ref="searchWidget" @submit="reset" @result="handleResult" :search-sources="searchSources" :load-map="true"></form>
 
-    <p class="mb-2">
-      Your address will be used to populate the "Mobility Assessment District" and "Park/Schools Impact Fee Zone" fields below.
+    <p class="mb-3 text-muted form-text small">
+      Your address or folio number will be used to populate the "Mobility Assessment District" and "Park/Schools Impact Fee Zone" fields below.
     </p>
-
-    <form is="HcAddressParcelForm" ref="addressForm" @submit="formSearch" :return-parcel-geometry="true"></form>
 
     <div ref="errorAlerts" is="HcErrorAlerts"></div>
 
@@ -39,7 +37,7 @@
 </template>
 
 <script>
-import HcAddressParcelForm from 'hc-address-parcel-form'
+import HcEsriSearchWidget, { Geocoder, Parcel } from 'hc-esri-search-widget'
 import HcErrorAlerts from 'hc-error-alerts'
 import CalcForm from '@/components/CalcForm'
 import Results from '@/components/Results'
@@ -53,33 +51,46 @@ export default {
     resultsMixin
   ],
   components: {
-    HcAddressParcelForm,
+    HcEsriSearchWidget,
     HcErrorAlerts,
     CalcForm,
     Results
   },
   data () {
     return {
-      formResult: {}
+      searchResult: null
     }
   },
   methods: {
-    formSearch (promise) {
-      this.$refs.addressForm.isSearching = true
+    reset (e) {
+      this.searchResult = null
       this.$refs.errorAlerts.clearAlerts()
+    },
+    handleResult (result) {
+      this.searchResult = result
 
-      promise.then(result => {
-        this.formResult = result
-        this.formResult.errors.forEach(err => { throw err })
-        return this.fetchDistricts(result.parcelData.geometry)
-      }).catch(err => {
-        this.$refs.errorAlerts.addAlert(err)
-      }).then(() => {
-        this.$refs.addressForm.isSearching = false
-      })
+      if (this.searchResult.error) {
+        this.handleError(this.searchResult.error)
+      } else if (this.searchResult.hasFeature()) {
+        this.$refs.searchWidget.isSearching = true
+        this.$refs.searchWidget.status = 'Finding Districts...'
+        this.fetchDistricts(this.searchResult.result.feature.geometry).catch(this.handleError).then(() => {
+          this.$refs.searchWidget.status = null
+          this.$refs.searchWidget.isSearching = false
+        })
+      }
+    },
+    handleError (err) {
+      console.warn(err)
+      this.$refs.errorAlerts.addAlert(err)
     },
     touchCalcForms (e) {
       this.updateTotals(this.$refs)
+    }
+  },
+  computed: {
+    searchSources () {
+      return [Geocoder.esriSearchSource, Parcel.esriSearchSource]
     }
   },
   watch: {

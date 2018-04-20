@@ -17,8 +17,8 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "esri-loader": "^2.2.0",
-    "hc-address-parcel-form": "git+https://github.com/Commbocc/hc-address-parcel-form.git",
     "hc-error-alerts": "git+https://github.com/Commbocc/hc-error-alerts.git",
+    "hc-esri-search-widget": "git+https://github.com/Commbocc/hc-esri-search-widget.git",
     "vue": "^2.5.2",
     "vuex": "^3.0.1"
   },

@@ -11,15 +11,15 @@
 
   <section class="py-5">
     <div class="container">
-
       <div id="app"></div>
-
     </div>
-  </div>
+  </section>
 
+  <!-- include babel-polyfill for IE11 Promise support -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
   <script src="./dist/build.js"></script>
   <script type="text/javascript">
-  new HcMobilityFeeCalc().$mount('#app')
+  new HcMobilityFeeCalc().$mount('#app');
   </script>
 </body>
 </html>

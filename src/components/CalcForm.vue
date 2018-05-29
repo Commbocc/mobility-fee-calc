@@ -1,7 +1,10 @@
 <template>
   <form id="calc-form" class="card mb-3">
 
-    <strong class="card-header font-weight-bold">{{ title }}</strong>
+    <strong class="card-header font-weight-bold d-flex align-items-center justify-content-between">
+      {{ title }}
+      <button @click.prevent="reset" class="btn btn-sm btn-white">Reset</button>
+    </strong>
 
     <div class="card-body">
       <div class="form-group">
@@ -45,19 +48,28 @@
       </div>
     </div>
 
-    <!-- <pre>{{ results }}</pre> -->
+    <!-- <pre>{{ subtotals }}</pre> -->
 
   </form>
 </template>
 
 <script>
-import { districtsMixin } from '@/store/modules/districts'
-import { selectOptionsMixin } from '@/store/modules/selectOptions'
-import { pricingMixin } from '@/store/modules/pricing'
+import { districtsMixin } from '../store/modules/districts'
+import { selectOptionsMixin } from '../store/modules/selectOptions'
+import { pricingMixin } from '../store/modules/pricing'
 
 export default {
   name: 'calc-form',
-  props: ['title'],
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    isExisitng: {
+      type: Boolean,
+      default: false
+    }
+  },
   mixins: [
     districtsMixin,
     selectOptionsMixin,
@@ -72,19 +84,27 @@ export default {
   },
   methods: {
     reset () {
-      this.housingType = null
-      this.bedrooms = null
-      this.squareFootage = null
+      if (confirm(`Are you sure? This will remove the selections made in "${this.title}".`)) {
+        this.housingType = null
+        this.bedrooms = null
+        this.squareFootage = null
+        return true
+      } else {
+        return false
+      }
     }
   },
   computed: {
-    results () {
-      return this.calculatePricing(this.$data)
+    subtotals () {
+      return this.calcSubtotal(this.$data)
     }
   },
   watch: {
-    'results': function (value) {
-      this.$emit('update', value)
+    subtotals () {
+      this.updateTotals({
+        isExisitng: this.isExisitng,
+        subtotals: this.subtotals
+      })
     }
   }
 }

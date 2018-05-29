@@ -2,6 +2,20 @@
 
 > A Vue.js project
 
+## Installation
+
+```html
+<div id="app"></div>
+
+<!-- include babel-polyfill for IE11 Promise support -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+<!-- sets HcPrsMrsDepts as a variable -->
+<script src="https://commbocc.github.io/mobility-fee-calc/dist/build.js"></script>
+<script type="text/javascript">
+new HcMobilityFeeCalc().$mount('#app');
+</script>
+```
+
 ## Build Setup
 
 ``` bash

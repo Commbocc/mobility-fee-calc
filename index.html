@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <title>Mobility Fee Calculator</title>
 
   <link rel="stylesheet" href="https://commbocc.github.io/html-wrapper/static/css/app.css">
@@ -12,12 +11,15 @@
 
   <section class="py-5">
     <div class="container">
-
       <div id="app"></div>
-
     </div>
-  </div>
+  </section>
 
-  <!-- built files will be auto injected -->
+  <!-- include babel-polyfill for IE11 Promise support -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+  <script src="./dist/build.js"></script>
+  <script type="text/javascript">
+  new HcMobilityFeeCalc().$mount('#app');
+  </script>
 </body>
 </html>

@@ -59,17 +59,17 @@
 </template>
 
 <script>
-import { resultsMixin } from '@/store/modules/results'
+import { pricingMixin } from '../store/modules/pricing'
 
 export default {
   name: 'results',
-  mixins: [resultsMixin],
+  mixins: [pricingMixin],
   methods: {
     currency (decimal) {
-      if (decimal <= 0) {
-        return '-'
-      } else {
+      if (decimal > 0) {
         return '$' + decimal.toFixed(2)
+      } else {
+        return '-'
       }
     }
   }

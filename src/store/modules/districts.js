@@ -1,5 +1,4 @@
-import * as esriLoader from 'esri-loader'
-import { mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   state: {
@@ -7,51 +6,30 @@ export default {
     parkSchoolAssessment: null
   },
   actions: {
-    fetchDistricts ({ commit, dispatch }, geometry) {
+    resetDistricts ({ commit }) {
       commit('setMAD', null)
       commit('setPSAD', null)
-
-      return esriLoader.loadModules([
-        'esri/tasks/support/Query'
-      ]).then(([Query]) => {
-        var query = new Query()
-        query.geometry = geometry
-        query.spatialRelationship = 'within'
-
-        return Promise.all([
-          dispatch('fetchMobilityDistrict', query),
-          dispatch('fetchParkSchoolDistrict', query)
-        ])
+    },
+    fetchMobilityDistrict ({ commit, getters }, result) {
+      let url = 'https://maps.hillsboroughcounty.org/arcgis/rest/services/DSD_Viewer_Services/Mobility_Fees/MapServer/0'
+      return result.queryFeatures(url).then(feature => {
+        if (feature) {
+          commit('setMAD', getters.formatDistrictStr(feature.attributes['DATA']))
+        } else {
+          commit('setMAD', null)
+          throw new Error('A Mobility District could not be determined.')
+        }
       })
     },
-    fetchMobilityDistrict ({ commit, getters }, query) {
-      return esriLoader.loadModules([
-        'esri/tasks/QueryTask'
-      ]).then(([QueryTask]) => {
-        return new QueryTask({
-          url: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/DSD_Viewer_Services/Mobility_Fees/MapServer/0'
-        }).execute(query).then(result => {
-          if (result.features.length) {
-            commit('setMAD', getters.formatDistrictStr(result.features[0].attributes['DATA']))
-          } else {
-            throw new Error('A Mobility District could not be determined.')
-          }
-        })
-      })
-    },
-    fetchParkSchoolDistrict ({ commit, getters }, query) {
-      return esriLoader.loadModules([
-        'esri/tasks/QueryTask'
-      ]).then(([QueryTask]) => {
-        return new QueryTask({
-          url: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/InfoLayers/infoLayers/MapServer/3'
-        }).execute(query).then(result => {
-          if (result.features.length) {
-            commit('setPSAD', getters.formatDistrictStr(result.features[0].attributes['ZONE']))
-          } else {
-            throw new Error('A Park/Schools Impact Fee Zone could not be determined.')
-          }
-        })
+    fetchParkSchoolDistrict ({ commit, getters }, result) {
+      let url = 'https://maps.hillsboroughcounty.org/arcgis/rest/services/InfoLayers/infoLayers/MapServer/3'
+      return result.queryFeatures(url).then(feature => {
+        if (feature) {
+          commit('setPSAD', getters.formatDistrictStr(feature.attributes['ZONE']))
+        } else {
+          commit('setPSAD', null)
+          throw new Error('A Park/Schools Impact Fee Zone could not be determined.')
+        }
       })
     }
   },
@@ -64,17 +42,19 @@ export default {
     }
   },
   getters: {
-    formatDistrictStr: state => str => {
-      return str.charAt().toUpperCase() + str.toLowerCase().slice(1)
-    }
+    formatDistrictStr: state => str => str.charAt().toUpperCase() + str.toLowerCase().slice(1)
   }
 }
 
 export const districtsMixin = {
   computed: {
+    ...mapState({
+      mobilityAssessment: state => state.districts.mobilityAssessment,
+      parkSchoolAssessment: state => state.districts.parkSchoolAssessment
+    }),
     madModel: {
       get () {
-        return this.$store.state.districts.mobilityAssessment
+        return this.mobilityAssessment
       },
       set (value) {
         this.setMAD(value)
@@ -82,7 +62,7 @@ export const districtsMixin = {
     },
     psadModel: {
       get () {
-        return this.$store.state.districts.parkSchoolAssessment
+        return this.parkSchoolAssessment
       },
       set (value) {
         this.setPSAD(value)
@@ -90,7 +70,11 @@ export const districtsMixin = {
     }
   },
   methods: {
-    ...mapActions(['fetchDistricts']),
+    ...mapActions([
+      'resetDistricts',
+      'fetchMobilityDistrict',
+      'fetchParkSchoolDistrict'
+    ]),
     ...mapMutations([
       'setMAD',
       'setPSAD'

@@ -1,10 +1,10 @@
 <template>
   <form id="calc-form" class="card mb-3">
 
-    <strong class="card-header font-weight-bold d-flex align-items-center justify-content-between">
-      {{ title }}
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <strong>{{ title }}</strong>
       <button @click.prevent="reset" class="btn btn-sm btn-white">Reset</button>
-    </strong>
+    </div>
 
     <div class="card-body">
       <div class="form-group">

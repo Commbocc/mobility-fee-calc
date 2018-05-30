@@ -1,9 +1,9 @@
 <template>
   <div class="card mb-3">
 
-    <strong class="card-header bg-secondary text-light font-weight-bold">
-      Balance Due
-    </strong>
+    <div class="card-header bg-secondary text-light d-flex align-items-center justify-content-between">
+      <strong>Balance Due</strong>
+    </div>
 
     <table class="table table-striped border-0 mb-0">
       <tbody>

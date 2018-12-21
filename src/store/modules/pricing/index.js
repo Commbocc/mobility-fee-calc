@@ -1,4 +1,4 @@
-import * as pricing from './2018'
+import * as pricing from './2019'
 import { mapActions, mapGetters } from 'vuex'
 
 function zeroedValues () {

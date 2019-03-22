@@ -1,38 +1,25 @@
 {
   "name": "hc-mobility-fee-calc",
-  "description": "A Vue.js project",
-  "version": "1.0.0",
-  "author": "Kevin McCarthy <mccarthyk@hcflgov.net>",
-  "license": "MIT",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --formats umd-min --name HcMobilityFeeCalc src/App.vue",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "hc-error-alerts": "git+https://github.com/Commbocc/hc-error-alerts.git",
-    "hc-esri-search-widget": "git+https://github.com/Commbocc/hc-esri-search-widget.git",
-    "vue": "^2.5.16",
+    "@hcflgov/vue-esri-search": "file:../../packages/@hcflgov/vue-esri-search",
+    "vue": "^2.6.6",
     "vuex": "^3.0.1"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "cross-env": "^5.1.6",
-    "css-loader": "^0.28.7",
-    "file-loader": "^1.1.4",
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
-    "vue-loader": "^13.7.2",
-    "vue-template-compiler": "^2.4.4",
-    "webpack": "^3.12.0",
-    "webpack-dev-server": "^2.9.1"
+    "@hcflgov/vue-html-wrapper": "^2.2.1",
+    "@vue/cli-plugin-babel": "^3.5.0",
+    "@vue/cli-plugin-eslint": "^3.5.0",
+    "@vue/cli-service": "^3.5.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.5.21"
   }
 }

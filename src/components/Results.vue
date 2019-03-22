@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { pricingMixin } from '../store/modules/pricing'
+import { pricingMixin } from '../mixins'
 
 export default {
   name: 'results',

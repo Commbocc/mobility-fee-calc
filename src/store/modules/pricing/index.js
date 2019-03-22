@@ -1,5 +1,4 @@
-import * as pricing from './2018'
-import { mapActions, mapGetters } from 'vuex'
+import * as pricing from './2019'
 
 function zeroedValues () {
   return {
@@ -74,12 +73,4 @@ export default {
       return values
     }
   }
-}
-
-export const pricingMixin = {
-  methods: mapActions(['updateTotals']),
-  computed: mapGetters([
-    'calcSubtotal',
-    'totals'
-  ])
 }

@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
-import store from './store'
 
-export default Vue.extend({
-  store,
-  extends: App
-})
+import '@hcflgov/vue-html-wrapper/dist/HcHtmlWrapper.css'
+
+Vue.config.productionTip = false
+
+new Vue({
+  render: h => h(App)
+}).$mount('#app')

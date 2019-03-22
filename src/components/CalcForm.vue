@@ -3,7 +3,10 @@
 
     <div class="card-header d-flex align-items-center justify-content-between">
       <strong>{{ title }}</strong>
-      <button @click.prevent="reset" class="btn btn-sm btn-white">Reset</button>
+      <button @click.prevent="reset" class="badge badge-light p-2 border border-warning my-0">
+        <span class="fas fa-history" aria-hidden="true"></span>
+        Reset
+      </button>
     </div>
 
     <div class="card-body">
@@ -54,9 +57,7 @@
 </template>
 
 <script>
-import { districtsMixin } from '../store/modules/districts'
-import { selectOptionsMixin } from '../store/modules/selectOptions'
-import { pricingMixin } from '../store/modules/pricing'
+import { districtsMixin, selectOptionsMixin, pricingMixin } from '../mixins'
 
 export default {
   name: 'calc-form',

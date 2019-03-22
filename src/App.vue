@@ -1,15 +1,14 @@
-<template lang="html">
-  <main id="HcMobilityFeeCalc">
+<template>
+  <div id="app">
 
-    <form is="HcEsriSearchWidget" ref="searchWidget" @submit="searchReset" @result="searchResult" :search-sources="searchSources" :load-map="true"></form>
-
-    <div ref="errorAlerts" is="HcErrorAlerts"></div>
+    <form is="HcEsriSearchForm" ref="searchForm" source-selector @submit="reset" @result="handleResult"></form>
 
     <div class="form-group">
-      <label class="font-weight-bold">New Construction</label>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" v-model="constructionModel">
+      <div class="font-weight-bold">New Construction</div>
+
+      <div class="form-check">
+        <input v-model="constructionModel" class="form-check-input" type="checkbox" value="" id="newConstruction">
+        <label class="form-check-label" for="newConstruction">
           This estimate is for a site with no existing home.
         </label>
       </div>
@@ -27,38 +26,38 @@
       </div>
     </div>
 
-  </main>
+  </div>
 </template>
 
 <script>
-import { districtsMixin } from './store/modules/districts'
-import { constructionMixin } from './store/modules/construction'
+import store from './store'
+// import HcEsriSearchForm from '@hcflgov/vue-esri-search'
+import HcEsriSearchForm from '@hcflgov/vue-esri-search/src/App' // TODO: replace with @hcflgov/vue-esri-search on npm
 
-import HcEsriSearchWidget from 'hc-esri-search-widget'
-import HcErrorAlerts from 'hc-error-alerts'
-import CalcForm from './components/CalcForm'
-import Results from './components/Results'
+import { CalcForm, Results } from './components'
+import { constructionMixin, districtsMixin } from './mixins'
 
 export default {
-  name: 'HcMobilityFeeCalc',
-  mixins: [districtsMixin, constructionMixin],
-  components: {
-    HcEsriSearchWidget,
-    HcErrorAlerts,
-    CalcForm,
-    Results
-  },
+  name: 'hc-mobility-fee-calc',
+  store,
+  components: { HcEsriSearchForm, CalcForm, Results },
+  mixins: [constructionMixin, districtsMixin],
   methods: {
-    searchReset (e) {
-      this.$refs.errorAlerts.clearAlerts()
+    reset () {
+      // clear errors
       this.resetDistricts()
     },
-    searchResult (result) {
+    handleResult (result) {
+      // this.result = result
       this.fetchMobilityDistrict(result).catch(err => {
-        this.$refs.errorAlerts.addAlert(err)
+        // TODO: handle error
+        console.warn('fetchMobilityDistrict', err)
+        // this.$refs.errorAlerts.addAlert(err)
       })
       this.fetchParkSchoolDistrict(result).catch(err => {
-        this.$refs.errorAlerts.addAlert(err)
+        // TODO: handle error
+        console.warn('fetchParkSchoolDistrict', err)
+        // this.$refs.errorAlerts.addAlert(err)
       })
     }
   },
@@ -69,11 +68,6 @@ export default {
       } else {
         this.setConstruction(false)
       }
-    }
-  },
-  computed: {
-    searchSources () {
-      return [HcEsriSearchWidget.Geocoder.esriSearchSource, HcEsriSearchWidget.Parcel.esriSearchSource]
     }
   }
 }

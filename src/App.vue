@@ -31,8 +31,7 @@
 
 <script>
 import store from './store'
-// import HcEsriSearchForm from '@hcflgov/vue-esri-search'
-import HcEsriSearchForm from '@hcflgov/vue-esri-search/src/App' // TODO: replace with @hcflgov/vue-esri-search on npm
+import HcEsriSearchForm from '@hcflgov/vue-esri-search'
 
 import { CalcForm, Results } from './components'
 import { constructionMixin, districtsMixin } from './mixins'
@@ -66,7 +65,9 @@ export default {
       if (this.isNewConstruction && this.$refs.formExisting.reset()) {
         // form's reset method confirms
       } else {
-        this.setConstruction(false)
+        this.$nextTick(() => {
+          this.setConstruction(false)
+        })
       }
     }
   }

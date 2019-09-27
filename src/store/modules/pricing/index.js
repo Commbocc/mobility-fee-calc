@@ -1,13 +1,11 @@
 import * as pricing from './2019'
 
-function zeroedValues () {
-  return {
-    mobility: 0,
-    park: 0,
-    school: 0,
-    fire: 0
-  }
-}
+let zeroedValues = () => ({
+  mobility: 0,
+  park: 0,
+  school: 0,
+  fire: 0
+})
 
 export default {
   state: {

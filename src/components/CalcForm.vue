@@ -76,13 +76,11 @@ export default {
     selectOptionsMixin,
     pricingMixin
   ],
-  data () {
-    return {
-      housingType: null,
-      bedrooms: null,
-      squareFootage: null
-    }
-  },
+  data: () => ({
+    housingType: null,
+    bedrooms: null,
+    squareFootage: null
+  }),
   methods: {
     reset () {
       if (confirm(`Are you sure? This will remove the selections made in "${this.title}".`)) {

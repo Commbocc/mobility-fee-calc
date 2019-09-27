@@ -10,7 +10,7 @@ export default {
     },
     fetchMobilityDistrict ({ commit, getters }, result) {
       let url = 'https://maps.hillsboroughcounty.org/arcgis/rest/services/DSD_Viewer_Services/Mobility_Fees/MapServer/0'
-      return result.queryFeatures(url).then(feature => {
+      return result.queryFeatures({url}).then(feature => {
         if (feature) {
           commit('setMAD', getters.formatDistrictStr(feature.attributes['DATA']))
         } else {
@@ -21,7 +21,7 @@ export default {
     },
     fetchParkSchoolDistrict ({ commit, getters }, result) {
       let url = 'https://maps.hillsboroughcounty.org/arcgis/rest/services/InfoLayers/infoLayers/MapServer/3'
-      return result.queryFeatures(url).then(feature => {
+      return result.queryFeatures({url}).then(feature => {
         if (feature) {
           commit('setPSAD', getters.formatDistrictStr(feature.attributes['ZONE']))
         } else {
@@ -40,6 +40,6 @@ export default {
     }
   },
   getters: {
-    formatDistrictStr: state => str => str.charAt().toUpperCase() + str.toLowerCase().slice(1)
+    formatDistrictStr: () => str => str.charAt().toUpperCase() + str.toLowerCase().slice(1)
   }
 }

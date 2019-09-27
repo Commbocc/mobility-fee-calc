@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --formats umd-min --name HcMobilityFeeCalc src/App.vue",
+    "build": "vue-cli-service build --target lib --formats umd-min --name HcMobilityFeeCalc",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@hcflgov/vue-esri-search": "file:../../packages/@hcflgov/vue-esri-search",
+    "@hcflgov/vue-esri-search": "^1.0.1",
     "vue": "^2.6.6",
     "vuex": "^3.0.1"
   },

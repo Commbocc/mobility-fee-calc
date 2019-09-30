@@ -1,15 +1,16 @@
-<template lang="html">
-  <main id="HcMobilityFeeCalc">
+<template>
+  <div id="app">
 
-    <form is="HcEsriSearchWidget" ref="searchWidget" @submit="searchReset" @result="searchResult" :search-sources="searchSources" :load-map="true"></form>
+    <!-- <pre>{{ $data }}</pre> -->
 
-    <div ref="errorAlerts" is="HcErrorAlerts"></div>
+    <form is="HcEsriSearchForm" ref="searchForm" source-selector @submit="resetDistricts" @result="handleResult"></form>
 
     <div class="form-group">
-      <label class="font-weight-bold">New Construction</label>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" v-model="constructionModel">
+      <div class="font-weight-bold">New Construction</div>
+
+      <div class="form-check">
+        <input v-model="isNewConstruction" class="form-check-input" type="checkbox" value="" id="newConstruction">
+        <label class="form-check-label" for="newConstruction">
           This estimate is for a site with no existing home.
         </label>
       </div>
@@ -17,48 +18,60 @@
 
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <form is="CalcForm" title="New Home"></form>
+        <form is="CalcForm" title="New Home" ref="formNew"></form>
       </div>
       <div v-if="!isNewConstruction" class="col-md-6">
-        <form is="CalcForm" title="Existing Home" :isExisitng="true" ref="formExisting"></form>
+        <form is="CalcForm" title="Existing Home" is-exisitng ref="formExisting"></form>
       </div>
       <div class="col">
         <div is="Results"></div>
       </div>
     </div>
 
-  </main>
+  </div>
 </template>
 
 <script>
-import { districtsMixin } from './store/modules/districts'
-import { constructionMixin } from './store/modules/construction'
-
-import HcEsriSearchWidget from 'hc-esri-search-widget'
-import HcErrorAlerts from 'hc-error-alerts'
-import CalcForm from './components/CalcForm'
-import Results from './components/Results'
+import HcEsriSearchForm from '@hcflgov/vue-esri-search'
+import { CalcForm, Results } from './components'
+import DistrictLookup from './assets/DistrictLookup'
 
 export default {
-  name: 'HcMobilityFeeCalc',
-  mixins: [districtsMixin, constructionMixin],
-  components: {
-    HcEsriSearchWidget,
-    HcErrorAlerts,
-    CalcForm,
-    Results
+  install (Vue) {
+    Vue.mixin({
+      components: {
+        HcMobilityFeeCalc: this
+      }
+    })
   },
+  components: {
+    HcEsriSearchForm, CalcForm, Results
+  },
+  data: () => ({
+    mobilityAssessment: null,
+    parkSchoolAssessment: null,
+    isNewConstruction: true
+  }),
   methods: {
-    searchReset (e) {
-      this.$refs.errorAlerts.clearAlerts()
-      this.resetDistricts()
+    resetDistricts () {
+      this.mobilityAssessment = null
+      this.parkSchoolAssessment = null
     },
-    searchResult (result) {
-      this.fetchMobilityDistrict(result).catch(err => {
-        this.$refs.errorAlerts.addAlert(err)
+    handleResult (result) {
+      var lookup = new DistrictLookup(result)
+
+      lookup.fetchMobilityDistrict().then(res => {
+        this.mobilityAssessment = res
+      }).catch(err => {
+        // TODO: handle error
+        console.warn('fetchMobilityDistrict', err)
       })
-      this.fetchParkSchoolDistrict(result).catch(err => {
-        this.$refs.errorAlerts.addAlert(err)
+
+      lookup.fetchParkSchoolDistrict().then(res => {
+        this.parkSchoolAssessment = res
+      }).catch(err => {
+        // TODO: handle error
+        console.warn('fetchParkSchoolDistrict', err)
       })
     }
   },
@@ -67,13 +80,10 @@ export default {
       if (this.isNewConstruction && this.$refs.formExisting.reset()) {
         // form's reset method confirms
       } else {
-        this.setConstruction(false)
+        this.$nextTick(() => {
+          this.isNewConstruction = false
+        })
       }
-    }
-  },
-  computed: {
-    searchSources () {
-      return [HcEsriSearchWidget.Geocoder.esriSearchSource, HcEsriSearchWidget.Parcel.esriSearchSource]
     }
   }
 }

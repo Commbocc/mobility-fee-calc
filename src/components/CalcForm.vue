@@ -1,9 +1,12 @@
 <template>
-  <form id="calc-form" class="card mb-3">
+  <form class="card mb-3">
 
     <div class="card-header d-flex align-items-center justify-content-between">
       <strong>{{ title }}</strong>
-      <button @click.prevent="reset" class="btn btn-sm btn-white">Reset</button>
+      <button @click.prevent="reset" class="badge badge-light p-2 border border-warning my-0">
+        <span class="fas fa-history" aria-hidden="true"></span>
+        Reset
+      </button>
     </div>
 
     <div class="card-body">
@@ -11,7 +14,15 @@
         <label>Housing Type</label>
         <select v-model="housingType" class="form-control">
           <option :value="null"></option>
-          <option v-for="(option, index) in selectOptions['housingType']" :key="index">{{ option }}</option>
+          <option v-for="(option, index) in selectOptions['housingType']" :key="index" >{{ option }}</option>
+        </select>
+      </div>
+
+      <div class="form-group" :class="(!isMobileHome) ? 'text-muted' : null">
+        <label>Mobile Home Park</label>
+        <select v-model="mobilePark" class="form-control" :disabled="!isMobileHome">
+          <option :value="true">In a Park</option>
+          <option :value="false">Not in a Park</option>
         </select>
       </div>
 
@@ -33,7 +44,7 @@
 
       <div class="form-group">
         <label>Mobility Assessment District</label>
-        <select v-model="madModel" class="form-control">
+        <select v-model="$parent.mobilityAssessment" class="form-control">
           <option :value="null"></option>
           <option v-for="(option, index) in selectOptions['mobilityAssessmentDist']" :key="index">{{ option }}</option>
         </select>
@@ -41,22 +52,22 @@
 
       <div class="form-group">
         <label>Park/Schools Impact Fee Zone</label>
-        <select v-model="psadModel" class="form-control">
+        <select v-model="$parent.parkSchoolAssessment" class="form-control">
           <option :value="null"></option>
           <option v-for="(option, index) in selectOptions['parkSchoolAssessmentDist']" :key="index">{{ option }}</option>
         </select>
       </div>
     </div>
 
+    <!-- <pre>{{ $data }}</pre> -->
     <!-- <pre>{{ subtotals }}</pre> -->
 
   </form>
 </template>
 
 <script>
-import { districtsMixin } from '../store/modules/districts'
-import { selectOptionsMixin } from '../store/modules/selectOptions'
-import { pricingMixin } from '../store/modules/pricing'
+import selectOptions from '../assets/selectOptions'
+import * as pricing from '../assets/pricing'
 
 export default {
   name: 'calc-form',
@@ -70,16 +81,42 @@ export default {
       default: false
     }
   },
-  mixins: [
-    districtsMixin,
-    selectOptionsMixin,
-    pricingMixin
-  ],
-  data () {
-    return {
-      housingType: null,
-      bedrooms: null,
-      squareFootage: null
+  data: () => ({
+    housingType: null,
+    bedrooms: null,
+    squareFootage: null,
+    mobilePark: null
+  }),
+  computed: {
+    selectOptions: () => selectOptions,
+    isMobileHome () {
+      return (this.housingType == 'Mobile Home')
+    },
+    subtotals () {
+      let values = pricing.zeroedValues()
+
+      if (this.housingType != null && this.squareFootage && this.$parent.mobilityAssessment) {
+        values.mobility = pricing.mobility[this.housingType][this.$parent.mobilityAssessment][this.squareFootage]
+      }
+
+      if (this.housingType != null && this.bedrooms && this.$parent.parkSchoolAssessment) {
+        values.park = pricing.park[this.housingType][this.$parent.parkSchoolAssessment][this.bedrooms]
+      }
+
+      if (this.squareFootage) {
+        values.school = pricing.school[this.squareFootage]
+      }
+
+      if (this.housingType != null || this.bedrooms || this.squareFootage) {
+        values.fire = pricing.fire[this.housingType]
+        if (this.mobilePark) {
+          values.fire = pricing.fire[this.housingType]
+        } else {
+          values.fire = pricing.fire['Single Family Detached']
+        }
+      }
+
+      return values
     }
   },
   methods: {
@@ -94,17 +131,13 @@ export default {
       }
     }
   },
-  computed: {
-    subtotals () {
-      return this.calcSubtotal(this.$data)
-    }
-  },
   watch: {
-    subtotals () {
-      this.updateTotals({
-        isExisitng: this.isExisitng,
-        subtotals: this.subtotals
-      })
+    housingType () {
+      if (!this.isMobileHome) {
+        this.mobilePark = null
+      } else {
+        this.mobilePark = true
+      }
     }
   }
 }

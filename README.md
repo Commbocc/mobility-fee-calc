@@ -1,32 +1,29 @@
 # hc-mobility-fee-calc
 
-> A Vue.js project
-
-## Installation
-
-```html
-<div id="app"></div>
-
-<!-- include babel-polyfill for IE11 Promise support -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
-<!-- sets HcPrsMrsDepts as a variable -->
-<script src="https://commbocc.github.io/mobility-fee-calc/dist/build.js"></script>
-<script type="text/javascript">
-new HcMobilityFeeCalc().$mount('#app');
-</script>
+## Project setup
+```
+yarn install
 ```
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
+### Compiles and hot-reloads for development
+```
+yarn run serve
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### Compiles and minifies for production
+```
+yarn run build
+```
+
+### Run your tests
+```
+yarn run test
+```
+
+### Lints and fixes files
+```
+yarn run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

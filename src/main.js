@@ -1,8 +1,11 @@
-import Vue from 'vue'
+import Vue from 'vue/dist/vue'
 import App from './App.vue'
-import store from './store'
 
-export default Vue.extend({
-  store,
-  extends: App
-})
+Vue.config.productionTip = false
+
+Vue.use(App)
+new Vue().$mount('#app')
+
+// new Vue({
+//   render: h => h(App),
+// }).$mount('#app')

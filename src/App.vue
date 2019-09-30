@@ -1,13 +1,15 @@
 <template>
   <div id="app">
 
-    <form is="HcEsriSearchForm" ref="searchForm" source-selector @submit="reset" @result="handleResult"></form>
+    <pre>{{ $data }}</pre>
+
+    <form is="HcEsriSearchForm" ref="searchForm" source-selector @submit="resetDistricts" @result="handleResult"></form>
 
     <div class="form-group">
       <div class="font-weight-bold">New Construction</div>
 
       <div class="form-check">
-        <input v-model="constructionModel" class="form-check-input" type="checkbox" value="" id="newConstruction">
+        <input v-model="isNewConstruction" class="form-check-input" type="checkbox" value="" id="newConstruction">
         <label class="form-check-label" for="newConstruction">
           This estimate is for a site with no existing home.
         </label>
@@ -16,10 +18,10 @@
 
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <form is="CalcForm" title="New Home"></form>
+        <form is="CalcForm" title="New Home" ref="formNew"></form>
       </div>
       <div v-if="!isNewConstruction" class="col-md-6">
-        <form is="CalcForm" title="Existing Home" :isExisitng="true" ref="formExisting"></form>
+        <form is="CalcForm" title="Existing Home" is-exisitng ref="formExisting"></form>
       </div>
       <div class="col">
         <div is="Results"></div>
@@ -30,33 +32,48 @@
 </template>
 
 <script>
-import store from './store'
 import HcEsriSearchForm from '@hcflgov/vue-esri-search'
 
 import { CalcForm, Results } from './components'
-import { constructionMixin, districtsMixin } from './mixins'
+
+import DistrictLookup from './assets/DistrictLookup'
 
 export default {
-  name: 'hc-mobility-fee-calc',
-  store,
-  components: { HcEsriSearchForm, CalcForm, Results },
-  mixins: [constructionMixin, districtsMixin],
+  install (Vue) {
+    Vue.mixin({
+      components: {
+        HcMobilityFeeCalc: this
+      }
+    })
+  },
+  components: {
+    HcEsriSearchForm, CalcForm, Results
+  },
+  data: () => ({
+    mobilityAssessment: null,
+    parkSchoolAssessment: null,
+    isNewConstruction: true
+  }),
   methods: {
-    reset () {
-      // clear errors
-      this.resetDistricts()
+    resetDistricts () {
+      this.mobilityAssessment = null
+      this.parkSchoolAssessment = null
     },
     handleResult (result) {
-      // this.result = result
-      this.fetchMobilityDistrict(result).catch(err => {
+      var lookup = new DistrictLookup(result)
+
+      lookup.fetchMobilityDistrict().then(res => {
+        this.mobilityAssessment = res
+      }).catch(err => {
         // TODO: handle error
         console.warn('fetchMobilityDistrict', err)
-        // this.$refs.errorAlerts.addAlert(err)
       })
-      this.fetchParkSchoolDistrict(result).catch(err => {
+
+      lookup.fetchParkSchoolDistrict().then(res => {
+        this.parkSchoolAssessment = res
+      }).catch(err => {
         // TODO: handle error
         console.warn('fetchParkSchoolDistrict', err)
-        // this.$refs.errorAlerts.addAlert(err)
       })
     }
   },
@@ -66,7 +83,7 @@ export default {
         // form's reset method confirms
       } else {
         this.$nextTick(() => {
-          this.setConstruction(false)
+          this.isNewConstruction = false
         })
       }
     }

@@ -59,18 +59,32 @@
 </template>
 
 <script>
-import { pricingMixin } from '../mixins'
+import { zeroedValues } from '../assets/pricing'
 
 export default {
   name: 'results',
-  mixins: [pricingMixin],
+  computed: {
+    totals () {
+      let totals = zeroedValues()
+      let diff = 0
+
+      Object.keys(totals).forEach(k => {
+        if (this.$parent.isNewConstruction) {
+          diff = this.$parent.$refs.formNew.subtotals[k]
+        } else {
+          diff = this.$parent.$refs.formNew.subtotals[k] - this.$parent.$refs.formExisting.subtotals[k]
+        }
+        totals[k] = (diff > 0) ? diff : 0
+      })
+
+      totals.total = Object.values(totals).reduce((a, b) => a + b)
+
+      return totals
+    }
+  },
   methods: {
     currency (decimal) {
-      if (decimal > 0) {
-        return '$' + decimal.toFixed(2)
-      } else {
-        return '-'
-      }
+      return (decimal > 0) ? '$' + decimal.toFixed(2) : '-'
     }
   }
 }

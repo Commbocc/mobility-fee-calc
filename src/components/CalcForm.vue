@@ -1,5 +1,5 @@
 <template>
-  <form id="calc-form" class="card mb-3">
+  <form class="card mb-3">
 
     <div class="card-header d-flex align-items-center justify-content-between">
       <strong>{{ title }}</strong>
@@ -36,7 +36,7 @@
 
       <div class="form-group">
         <label>Mobility Assessment District</label>
-        <select v-model="madModel" class="form-control">
+        <select v-model="$parent.mobilityAssessment" class="form-control">
           <option :value="null"></option>
           <option v-for="(option, index) in selectOptions['mobilityAssessmentDist']" :key="index">{{ option }}</option>
         </select>
@@ -44,7 +44,7 @@
 
       <div class="form-group">
         <label>Park/Schools Impact Fee Zone</label>
-        <select v-model="psadModel" class="form-control">
+        <select v-model="$parent.parkSchoolAssessment" class="form-control">
           <option :value="null"></option>
           <option v-for="(option, index) in selectOptions['parkSchoolAssessmentDist']" :key="index">{{ option }}</option>
         </select>
@@ -57,7 +57,8 @@
 </template>
 
 <script>
-import { districtsMixin, selectOptionsMixin, pricingMixin } from '../mixins'
+import selectOptions from '../assets/selectOptions'
+import * as pricing from '../assets/pricing'
 
 export default {
   name: 'calc-form',
@@ -71,16 +72,35 @@ export default {
       default: false
     }
   },
-  mixins: [
-    districtsMixin,
-    selectOptionsMixin,
-    pricingMixin
-  ],
   data: () => ({
     housingType: null,
     bedrooms: null,
     squareFootage: null
   }),
+  computed: {
+    selectOptions: () => selectOptions,
+    subtotals () {
+      let values = pricing.zeroedValues()
+
+      if (this.housingType && this.squareFootage && this.$parent.mobilityAssessment) {
+        values.mobility = pricing.mobility[this.housingType][this.$parent.mobilityAssessment][this.squareFootage]
+      }
+
+      if (this.housingType && this.bedrooms && this.$parent.parkSchoolAssessment) {
+        values.park = pricing.park[this.housingType][this.$parent.parkSchoolAssessment][this.bedrooms]
+      }
+
+      if (this.squareFootage) {
+        values.school = pricing.school[this.squareFootage]
+      }
+
+      if (this.housingType || this.bedrooms || this.squareFootage) {
+        values.fire = pricing.fire
+      }
+
+      return values
+    }
+  },
   methods: {
     reset () {
       if (confirm(`Are you sure? This will remove the selections made in "${this.title}".`)) {
@@ -91,19 +111,6 @@ export default {
       } else {
         return false
       }
-    }
-  },
-  computed: {
-    subtotals () {
-      return this.calcSubtotal(this.$data)
-    }
-  },
-  watch: {
-    subtotals () {
-      this.updateTotals({
-        isExisitng: this.isExisitng,
-        subtotals: this.subtotals
-      })
     }
   }
 }

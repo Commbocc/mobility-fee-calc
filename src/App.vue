@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <pre>{{ $data }}</pre>
+    <!-- <pre>{{ $data }}</pre> -->
 
     <form is="HcEsriSearchForm" ref="searchForm" source-selector @submit="resetDistricts" @result="handleResult"></form>
 

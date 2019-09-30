@@ -14,7 +14,7 @@
         <label>Housing Type</label>
         <select v-model="housingType" class="form-control">
           <option :value="null"></option>
-          <option v-for="(option, index) in selectOptions['housingType']" :key="index">{{ option }}</option>
+          <option v-for="(option, index) in selectOptions['housingType']" :key="index" :value="option.pricingIndex">{{ option.name }}</option>
         </select>
       </div>
 
@@ -82,11 +82,11 @@ export default {
     subtotals () {
       let values = pricing.zeroedValues()
 
-      if (this.housingType && this.squareFootage && this.$parent.mobilityAssessment) {
+      if (this.housingType != null && this.squareFootage && this.$parent.mobilityAssessment) {
         values.mobility = pricing.mobility[this.housingType][this.$parent.mobilityAssessment][this.squareFootage]
       }
 
-      if (this.housingType && this.bedrooms && this.$parent.parkSchoolAssessment) {
+      if (this.housingType != null && this.bedrooms && this.$parent.parkSchoolAssessment) {
         values.park = pricing.park[this.housingType][this.$parent.parkSchoolAssessment][this.bedrooms]
       }
 
@@ -94,8 +94,8 @@ export default {
         values.school = pricing.school[this.squareFootage]
       }
 
-      if (this.housingType || this.bedrooms || this.squareFootage) {
-        values.fire = pricing.fire
+      if (this.housingType != null || this.bedrooms || this.squareFootage) {
+        values.fire = pricing.fire[this.housingType]
       }
 
       return values

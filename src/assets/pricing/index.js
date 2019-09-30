@@ -1,4 +1,4 @@
-export * from './2019'
+export * from './2020'
 
 export const zeroedValues = () => ({
   mobility: 0,

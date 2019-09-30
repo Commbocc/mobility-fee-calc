@@ -1,10 +1,5 @@
-// Single Family Detached = pricingIndex 0
-// Mobile Home (not in a park)  = pricingIndex 0
-// Mobile Home (in a park) = pricingIndex 1
-
-export const mobility = [
-  // 0
-  {
+export const mobility = {
+  'Single Family Detached': {
     'Urban': {
       '0-499': 3489,
       '500-749': 3489,
@@ -30,8 +25,7 @@ export const mobility = [
       '4000+': 7246
     }
   },
-  // 1
-  {
+  'Mobile Home': {
     'Urban': {
       '0-499': 1643,
       '500-749': 1643,
@@ -57,11 +51,10 @@ export const mobility = [
       '4000+': 2384
     }
   }
-]
+}
 
-export const park = [
-  // 0
-  {
+export const park = {
+  'Single Family Detached': {
     'Northwest': {
       '1': 317.2,
       '2': 317.2,
@@ -91,8 +84,7 @@ export const park = [
       '5+': 314.92
     }
   },
-  // 1
-{
+  'Mobile Home': {
     'Northwest': {
       '1': 279.74,
       '2': 328.70,
@@ -122,7 +114,7 @@ export const park = [
       '5+': 245.10
     }
   }
-]
+}
 
 export const school = {
   '0-499': 1207,
@@ -137,9 +129,7 @@ export const school = {
   '4000+': 5200
 }
 
-export const fire = [
-  // 0
-  335,
-  // 1
-  299
-]
+export const fire = {
+  'Single Family Detached': 335,
+  'Mobile Home': 299
+}

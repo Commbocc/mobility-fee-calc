@@ -33,9 +33,7 @@
 
 <script>
 import HcEsriSearchForm from '@hcflgov/vue-esri-search'
-
 import { CalcForm, Results } from './components'
-
 import DistrictLookup from './assets/DistrictLookup'
 
 export default {

@@ -2,11 +2,6 @@ export default class DistrictLookup {
 
   constructor (result) {
     this.result = result
-    // this.mobilityAssessment
-    // this.parkSchoolAssessment
-
-    // this.fetchMobilityDistrict()
-    // this.fetchParkSchoolDistrict()
   }
 
   fetchMobilityDistrict () {

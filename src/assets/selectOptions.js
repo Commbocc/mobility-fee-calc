@@ -1,17 +1,7 @@
 export default {
   housingType: [
-    {
-      name: 'Single Family Detached',
-      pricingIndex: 0
-    },
-    {
-      name: 'Mobile Home (not in a park)',
-      pricingIndex: 0
-    },
-    {
-      name: 'Mobile Home (in a park)',
-      pricingIndex: 1
-    },
+    'Single Family Detached',
+    'Mobile Home'
   ],
   bedrooms: [
     1, 2, 3, 4, '5+'

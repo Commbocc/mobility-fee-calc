@@ -14,7 +14,15 @@
         <label>Housing Type</label>
         <select v-model="housingType" class="form-control">
           <option :value="null"></option>
-          <option v-for="(option, index) in selectOptions['housingType']" :key="index" :value="option.pricingIndex">{{ option.name }}</option>
+          <option v-for="(option, index) in selectOptions['housingType']" :key="index" >{{ option }}</option>
+        </select>
+      </div>
+
+      <div class="form-group" :class="(!isMobileHome) ? 'text-muted' : null">
+        <label>Mobile Home Park</label>
+        <select v-model="mobilePark" class="form-control" :disabled="!isMobileHome">
+          <option :value="true">In a Park</option>
+          <option :value="false">Not in a Park</option>
         </select>
       </div>
 
@@ -51,6 +59,7 @@
       </div>
     </div>
 
+    <!-- <pre>{{ $data }}</pre> -->
     <!-- <pre>{{ subtotals }}</pre> -->
 
   </form>
@@ -75,10 +84,14 @@ export default {
   data: () => ({
     housingType: null,
     bedrooms: null,
-    squareFootage: null
+    squareFootage: null,
+    mobilePark: null
   }),
   computed: {
     selectOptions: () => selectOptions,
+    isMobileHome () {
+      return (this.housingType == 'Mobile Home')
+    },
     subtotals () {
       let values = pricing.zeroedValues()
 
@@ -96,6 +109,11 @@ export default {
 
       if (this.housingType != null || this.bedrooms || this.squareFootage) {
         values.fire = pricing.fire[this.housingType]
+        if (this.mobilePark) {
+          values.fire = pricing.fire[this.housingType]
+        } else {
+          values.fire = pricing.fire['Single Family Detached']
+        }
       }
 
       return values
@@ -110,6 +128,15 @@ export default {
         return true
       } else {
         return false
+      }
+    }
+  },
+  watch: {
+    housingType () {
+      if (!this.isMobileHome) {
+        this.mobilePark = null
+      } else {
+        this.mobilePark = true
       }
     }
   }

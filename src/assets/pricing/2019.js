@@ -130,6 +130,6 @@ export const school = {
 }
 
 export const fire = {
-  'Single Family Detached': 48.66,
-  'Mobile Home': 48.66
+  'Single Family Detached': 335,
+  'Mobile Home': 299
 }

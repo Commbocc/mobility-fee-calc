@@ -1,13 +1,3 @@
-// import * as y2017 from './2017'
-// import * as y2018 from './2018'
-import * as y2019 from './2019'
-import * as y2020 from './2020'
-
-export const years = {
-  "2019": y2019,
-  "2020": y2020
-}
-
 export default class Pricing {
 
   constructor (year) {
@@ -19,20 +9,31 @@ export default class Pricing {
     var y
     let currentYear = new Date().getFullYear()
 
-    if (year in years) {
+    if (year in Pricing.years) {
       y = year
-    } else if (currentYear in years) {
+    } else if (currentYear in Pricing.years) {
       y = currentYear
     } else {
-      y = Object.keys(years)[Object.keys(years).length-1]
+      y = Object.keys(Pricing.years)[0]
     }
 
     this.year = y
   }
 
   setPricing () {
-    for (let [key, value] of Object.entries(years[this.year])) {
-      this[key] = value
+    Pricing.years[this.year]().then(pricing => {
+      for (let [key, value] of Object.entries(pricing)) {
+        this[key] = value
+      }
+    })
+  }
+
+  static get years () {
+    return {
+      "2020": () => import('./2020'),
+      "2019": () => import('./2019'),
+      // "2018": () => import('./2018'),
+      // "2017": () => import('./2017'),
     }
   }
 
@@ -44,4 +45,5 @@ export default class Pricing {
       fire: 0
     }
   }
+
 }

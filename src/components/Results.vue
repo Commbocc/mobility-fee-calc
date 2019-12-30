@@ -59,13 +59,13 @@
 </template>
 
 <script>
-import { zeroedValues } from '../assets/pricing'
+import Pricing from '../assets/pricing'
 
 export default {
   name: 'results',
   computed: {
     totals () {
-      let totals = zeroedValues()
+      let totals = Pricing.zeroedValues
       let diff = 0
 
       Object.keys(totals).forEach(k => {

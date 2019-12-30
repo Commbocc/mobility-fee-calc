@@ -129,4 +129,7 @@ export const school = {
   '4000+': 5200
 }
 
-export const fire = 48.66
+export const fire = {
+  'Single Family Detached': 48.66,
+  'Mobile Home': 48.66
+}

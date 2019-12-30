@@ -3,6 +3,8 @@
 
     <!-- <pre>{{ $data }}</pre> -->
 
+    <h3>Mobility/Impact Fee Calculator (Residential Only) - {{ $pricing.year }} Schedule</h3>
+
     <form is="HcEsriSearchForm" ref="searchForm" source-selector @submit="resetDistricts" @result="handleResult"></form>
 
     <div class="form-group">
@@ -35,14 +37,21 @@
 import HcEsriSearchForm from '@hcflgov/vue-esri-search'
 import { CalcForm, Results } from './components'
 import DistrictLookup from './assets/DistrictLookup'
+import Pricing from './assets/pricing'
 
 export default {
-  install (Vue) {
+  install (Vue, options = {}) {
+
+    Vue.prototype.$pricing = new Pricing(options.year)
+
     Vue.mixin({
       components: {
         HcMobilityFeeCalc: this
       }
     })
+  },
+  mounted () {
+    console.log(this.$pricing)
   },
   components: {
     HcEsriSearchForm, CalcForm, Results

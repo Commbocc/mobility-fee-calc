@@ -67,7 +67,7 @@
 
 <script>
 import selectOptions from '../assets/selectOptions'
-import * as pricing from '../assets/pricing'
+import Pricing from '../assets/pricing'
 
 export default {
   name: 'calc-form',
@@ -93,26 +93,26 @@ export default {
       return (this.housingType == 'Mobile Home')
     },
     subtotals () {
-      let values = pricing.zeroedValues()
+      let values = Pricing.zeroedValues
 
       if (this.housingType != null && this.squareFootage && this.$parent.mobilityAssessment) {
-        values.mobility = pricing.mobility[this.housingType][this.$parent.mobilityAssessment][this.squareFootage]
+        values.mobility = this.$pricing.mobility[this.housingType][this.$parent.mobilityAssessment][this.squareFootage]
       }
 
       if (this.housingType != null && this.bedrooms && this.$parent.parkSchoolAssessment) {
-        values.park = pricing.park[this.housingType][this.$parent.parkSchoolAssessment][this.bedrooms]
+        values.park = this.$pricing.park[this.housingType][this.$parent.parkSchoolAssessment][this.bedrooms]
       }
 
       if (this.squareFootage) {
-        values.school = pricing.school[this.squareFootage]
+        values.school = this.$pricing.school[this.squareFootage]
       }
 
       if (this.housingType != null || this.bedrooms || this.squareFootage) {
-        values.fire = pricing.fire[this.housingType]
+        values.fire = this.$pricing.fire[this.housingType]
         if (this.mobilePark) {
-          values.fire = pricing.fire[this.housingType]
+          values.fire = this.$pricing.fire[this.housingType]
         } else {
-          values.fire = pricing.fire['Single Family Detached']
+          values.fire = this.$pricing.fire['Single Family Detached']
         }
       }
 

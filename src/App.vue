@@ -1,20 +1,32 @@
 <template>
   <div id="app">
-
     <!-- <pre>{{ $data }}</pre> -->
 
     <h3>Mobility/Impact Fee Calculator (Residential Only) - {{ $pricing.year }} Schedule</h3>
 
-    <form is="HcEsriSearchForm" ref="searchForm" source-selector @submit="resetDistricts" @result="handleResult"></form>
+    <form
+      is="HcEsriSearchForm"
+      ref="searchForm"
+      source-selector
+      @submit="resetDistricts"
+      @result="handleResult"
+    ></form>
 
     <div class="form-group">
       <div class="font-weight-bold">New Construction</div>
 
       <div class="form-check">
-        <input v-model="isNewConstruction" class="form-check-input" type="checkbox" value="" id="newConstruction">
-        <label class="form-check-label" for="newConstruction">
-          This estimate is for a site with no existing home.
-        </label>
+        <input
+          v-model="isNewConstruction"
+          class="form-check-input"
+          type="checkbox"
+          value
+          id="newConstruction"
+        />
+        <label
+          class="form-check-label"
+          for="newConstruction"
+        >This estimate is for a site with no existing home.</label>
       </div>
     </div>
 
@@ -29,19 +41,17 @@
         <div is="Results"></div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
 import HcEsriSearchForm from '@hcflgov/vue-esri-search'
 import { CalcForm, Results } from './components'
-import DistrictLookup from './assets/DistrictLookup'
-import Pricing from './assets/pricing'
+import DistrictLookup from './store/DistrictLookup'
+import Pricing from './store/pricing'
 
 export default {
-  install (Vue, options = {}) {
-
+  install(Vue, options = {}) {
     Vue.prototype.$pricing = new Pricing(options.year)
 
     Vue.mixin({
@@ -51,7 +61,9 @@ export default {
     })
   },
   components: {
-    HcEsriSearchForm, CalcForm, Results
+    HcEsriSearchForm,
+    CalcForm,
+    Results
   },
   data: () => ({
     mobilityAssessment: null,
@@ -59,30 +71,30 @@ export default {
     isNewConstruction: true
   }),
   methods: {
-    resetDistricts () {
+    resetDistricts() {
       this.mobilityAssessment = null
       this.parkSchoolAssessment = null
     },
-    handleResult (result) {
-      var lookup = new DistrictLookup(result)
+    async handleResult(result) {
+      let lookup = new DistrictLookup(result)
 
-      lookup.fetchMobilityDistrict().then(res => {
-        this.mobilityAssessment = res
-      }).catch(err => {
+      try {
+        this.mobilityAssessment = await lookup.fetchMobilityDistrict()
+      } catch (err) {
         // TODO: handle error
-        console.warn('fetchMobilityDistrict', err)
-      })
+        console.warn('fetchMobilityDistrict:', err)
+      }
 
-      lookup.fetchParkSchoolDistrict().then(res => {
-        this.parkSchoolAssessment = res
-      }).catch(err => {
+      try {
+        this.parkSchoolAssessment = await lookup.fetchParkSchoolDistrict()
+      } catch (err) {
         // TODO: handle error
-        console.warn('fetchParkSchoolDistrict', err)
-      })
+        console.warn('fetchParkSchoolDistrict:', err)
+      }
     }
   },
   watch: {
-    isNewConstruction () {
+    isNewConstruction() {
       if (this.isNewConstruction && this.$refs.formExisting.reset()) {
         // form's reset method confirms
       } else {

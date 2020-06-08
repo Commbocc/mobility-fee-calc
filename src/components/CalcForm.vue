@@ -53,6 +53,7 @@
         </div>
 
         <input
+          v-if="false"
           type="range"
           v-model="squareFootage"
           min="0"
@@ -130,10 +131,6 @@ export default {
           this.$parent.mobilityAssessment,
           this.squareFootage
         )
-
-        // this.$pricing.mobility[this.housingType][
-        //   this.$parent.mobilityAssessment
-        // ][this.squareFootage]
       }
 
       if (

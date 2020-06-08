@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import Pricing from '../assets/pricing'
+import Pricing from '../store/pricing'
 
 export default {
   name: 'results',

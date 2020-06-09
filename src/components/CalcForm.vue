@@ -1,8 +1,12 @@
 <template>
-  <form class="card mb-3">
+  <form class="card mb-3" @submit.prevent>
     <div class="card-header d-flex align-items-center justify-content-between">
       <strong>{{ title }}</strong>
-      <button @click.prevent="reset" class="badge badge-light p-2 border border-warning my-0">
+      <button
+        @click.prevent="reset"
+        type="button"
+        class="badge badge-light p-2 border border-warning my-0"
+      >
         <span class="fas fa-history" aria-hidden="true"></span>
         Reset
       </button>

@@ -8,9 +8,9 @@ export const mobility = {
     ],
     Rural: [
       //[minSqFt, maxSqFt, price]
-      [0, 1499, 5774],
-      [1500, 2499, 7377],
-      [2500, Number.POSITIVE_INFINITY, 8282],
+      [0, 1499, 8031],
+      [1500, 2499, 9005],
+      [2500, Number.POSITIVE_INFINITY, 10338],
     ],
   },
   'Mobile Home': {

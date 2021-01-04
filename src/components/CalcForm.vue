@@ -17,23 +17,23 @@
         <label>Housing Type</label>
         <select v-model="housingType" class="form-control">
           <option :value="null"></option>
-          <option v-for="(option, index) in selectOptions['housingType']" :key="index">{{ option }}</option>
+          <option
+            v-for="(option, index) in selectOptions['housingType']"
+            :key="index"
+            >{{ option }}</option
+          >
         </select>
       </div>
 
-      <div class="form-group" :class="(!isMobileHome) ? 'text-muted' : null">
+      <div class="form-group" :class="!isMobileHome ? 'text-muted' : null">
         <label>Mobile Home Park</label>
-        <select v-model="mobilePark" class="form-control" :disabled="!isMobileHome">
+        <select
+          v-model="mobilePark"
+          class="form-control"
+          :disabled="!isMobileHome"
+        >
           <option :value="true">In a Park</option>
           <option :value="false">Not in a Park</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Number of Bedrooms</label>
-        <select v-model="bedrooms" class="form-control">
-          <option :value="null"></option>
-          <option v-for="(option, index) in selectOptions['bedrooms']" :key="index">{{ option }}</option>
         </select>
       </div>
 
@@ -74,18 +74,8 @@
           <option
             v-for="(option, index) in selectOptions['mobilityAssessmentDist']"
             :key="index"
-          >{{ option }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Park/Schools Impact Fee Zone</label>
-        <select v-model="$parent.parkSchoolAssessment" class="form-control">
-          <option :value="null"></option>
-          <option
-            v-for="(option, index) in selectOptions['parkSchoolAssessmentDist']"
-            :key="index"
-          >{{ option }}</option>
+            >{{ option }}</option
+          >
         </select>
       </div>
     </div>
@@ -104,18 +94,17 @@ export default {
   props: {
     title: {
       type: String,
-      required: true
+      required: true,
     },
     isExisitng: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data: () => ({
     housingType: null,
-    bedrooms: null,
     squareFootage: null,
-    mobilePark: null
+    mobilePark: null,
   }),
   computed: {
     selectOptions: () => selectOptions,
@@ -137,21 +126,15 @@ export default {
         )
       }
 
-      if (
-        this.housingType != null &&
-        this.bedrooms &&
-        this.$parent.parkSchoolAssessment
-      ) {
-        values.park = this.$pricing.park[this.housingType][
-          this.$parent.parkSchoolAssessment
-        ][this.bedrooms]
+      if (this.squareFootage) {
+        values.park = this.$pricing.calcPark(this.squareFootage)
       }
 
       if (this.squareFootage) {
         values.school = this.$pricing.calcSchool(this.squareFootage)
       }
 
-      if (this.housingType != null || this.bedrooms || this.squareFootage) {
+      if (this.housingType != null || this.squareFootage) {
         values.fire = this.$pricing.fire[this.housingType]
         if (this.mobilePark) {
           values.fire = this.$pricing.fire[this.housingType]
@@ -161,7 +144,7 @@ export default {
       }
 
       return values
-    }
+    },
   },
   methods: {
     reset() {
@@ -177,7 +160,7 @@ export default {
       } else {
         return false
       }
-    }
+    },
   },
   watch: {
     housingType() {
@@ -186,7 +169,7 @@ export default {
       } else {
         this.mobilePark = true
       }
-    }
-  }
+    },
+  },
 }
 </script>

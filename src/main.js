@@ -4,7 +4,8 @@ import App from './App.vue'
 Vue.config.productionTip = false
 
 Vue.use(App, {
-  // year: 2020
+  // year: 2020,
+  year: 2021,
 })
 
 new Vue().$mount('#app')

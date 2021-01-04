@@ -1,5 +1,6 @@
-export default class Pricing {
+import * as pricing2021 from './2021'
 
+export default class Pricing {
   constructor(year) {
     this.setYear(year)
     this.setPricing()
@@ -29,7 +30,9 @@ export default class Pricing {
 
   static get years() {
     return {
-      "2020": () => import('./2020'),
+      '2021': () => pricing2021,
+      // '2021': () => import('./2021'),
+      // '2020': () => import('./2020'),
       // "2019": () => import('./2019'),
       // "2018": () => import('./2018'),
       // "2017": () => import('./2017'),
@@ -41,13 +44,15 @@ export default class Pricing {
       mobility: 0,
       park: 0,
       school: 0,
-      fire: 0
+      fire: 0,
     }
   }
 
   calcMobility(housing, mobilityAssessment, sqFt = null) {
     if (sqFt !== null) {
-      return this.mobility[housing][mobilityAssessment].map(([min, max, price]) => (min <= sqFt && sqFt <= max) ? price : null).filter(Boolean)[0]
+      return this.mobility[housing][mobilityAssessment]
+        .map(([min, max, price]) => (min <= sqFt && sqFt <= max ? price : null))
+        .filter(Boolean)[0]
     } else {
       return null
     }
@@ -55,10 +60,21 @@ export default class Pricing {
 
   calcSchool(sqFt = null) {
     if (sqFt !== null) {
-      return this.school.map(([min, max, price]) => (min <= sqFt && sqFt <= max) ? price : null).filter(Boolean)[0]
+      return this.school
+        .map(([min, max, price]) => (min <= sqFt && sqFt <= max ? price : null))
+        .filter(Boolean)[0]
     } else {
       return null
     }
   }
 
+  calcPark(sqFt = null) {
+    if (sqFt !== null) {
+      return this.park
+        .map(([min, max, price]) => (min <= sqFt && sqFt <= max ? price : null))
+        .filter(Boolean)[0]
+    } else {
+      return null
+    }
+  }
 }

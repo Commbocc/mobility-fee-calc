@@ -2,25 +2,25 @@ export const mobility = {
   'Single Family Detached': {
     Urban: [
       //[minSqFt, maxSqFt, price]
-      [0, 1499, 5267],
-      [1500, 2499, 5921],
-      [2500, Number.POSITIVE_INFINITY, 6827],
+      [0, 1499, 6542],
+      [1500, 2499, 7346],
+      [2500, Number.POSITIVE_INFINITY, 8440],
     ],
     Rural: [
       //[minSqFt, maxSqFt, price]
-      [0, 1499, 8031],
-      [1500, 2499, 9005],
-      [2500, Number.POSITIVE_INFINITY, 10338],
+      [0, 1499, 9306],
+      [1500, 2499, 10430],
+      [2500, Number.POSITIVE_INFINITY, 11950],
     ],
   },
   'Mobile Home': {
     Urban: [
       //[minSqFt, maxSqFt, price]
-      [0, Number.POSITIVE_INFINITY, 2220],
+      [0, Number.POSITIVE_INFINITY, 2764],
     ],
     Rural: [
       //[minSqFt, maxSqFt, price]
-      [0, Number.POSITIVE_INFINITY, 3364],
+      [0, Number.POSITIVE_INFINITY, 3908],
     ],
   },
 }

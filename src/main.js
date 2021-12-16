@@ -5,7 +5,8 @@ Vue.config.productionTip = false
 
 Vue.use(App, {
   // year: 2020,
-  year: 2021,
+  // year: 2021,
+  // year: 2022,
 })
 
 new Vue().$mount('#app')

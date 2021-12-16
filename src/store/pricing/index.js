@@ -1,4 +1,5 @@
 import * as pricing2021 from './2021'
+import * as pricing2022 from './2022'
 
 export default class Pricing {
   constructor(year) {
@@ -31,6 +32,7 @@ export default class Pricing {
   static get years() {
     return {
       '2021': () => pricing2021,
+      '2022': () => pricing2022,
       // '2021': () => import('./2021'),
       // '2020': () => import('./2020'),
       // "2019": () => import('./2019'),

@@ -1,50 +1,47 @@
+<script setup lang="ts">
+import { grandTotals } from '../lib/pricing'
+
+const currency = (n: number) => (n > 0 ? '$' + n.toFixed(2) : '-')
+</script>
+
 <template>
   <div class="card mb-3">
-
-    <div class="card-header bg-secondary text-light d-flex align-items-center justify-content-between">
+    <div
+      class="card-header bg-secondary text-light d-flex align-items-center justify-content-between"
+    >
       <strong>Balance Due</strong>
     </div>
 
     <table class="table table-striped border-0 mb-0">
       <tbody>
         <tr>
-          <th>
-            Mobility Amount
-          </th>
+          <th>Mobility Amount</th>
           <td class="text-right" width="10">
-            {{ currency(totals.mobility) }}
+            {{ currency(grandTotals.mobility) }}
           </td>
         </tr>
         <tr>
-          <th>
-            Park Amount
-          </th>
+          <th>Park Amount</th>
           <td class="text-right">
-            {{ currency(totals.park) }}
+            {{ currency(grandTotals.park) }}
           </td>
         </tr>
         <tr>
-          <th>
-            School Amount
-          </th>
+          <th>School Amount</th>
           <td class="text-right">
-            {{ currency(totals.school) }}
+            {{ currency(grandTotals.school) }}
           </td>
         </tr>
         <tr>
-          <th>
-            Fire Amount
-          </th>
+          <th>Fire Amount</th>
           <td class="text-right">
-            {{ currency(totals.fire) }}
+            {{ currency(grandTotals.fire) }}
           </td>
         </tr>
         <tr>
-          <th>
-            TOTAL
-          </th>
+          <th>TOTAL</th>
           <th class="text-right">
-            {{ currency(totals.total) }}
+            {{ currency(grandTotals.total) }}
           </th>
         </tr>
       </tbody>
@@ -52,40 +49,10 @@
 
     <footer class="card-footer small">
       <em>
-        All fees provided by this calculator are only estimates to assist in planning, actual fees will be assessed on building permits based on application data provided.
+        All fees provided by this calculator are only estimates to assist in
+        planning, actual fees will be assessed on building permits based on
+        application data provided.
       </em>
     </footer>
   </div>
 </template>
-
-<script>
-import Pricing from '../store/pricing'
-
-export default {
-  name: 'results',
-  computed: {
-    totals () {
-      let totals = Pricing.zeroedValues
-      let diff = 0
-
-      Object.keys(totals).forEach(k => {
-        if (this.$parent.isNewConstruction) {
-          diff = this.$parent.$refs.formNew.subtotals[k]
-        } else {
-          diff = this.$parent.$refs.formNew.subtotals[k] - this.$parent.$refs.formExisting.subtotals[k]
-        }
-        totals[k] = (diff > 0) ? diff : 0
-      })
-
-      totals.total = Object.values(totals).reduce((a, b) => a + b)
-
-      return totals
-    }
-  },
-  methods: {
-    currency (decimal) {
-      return (decimal > 0) ? '$' + decimal.toFixed(2) : '-'
-    }
-  }
-}
-</script>

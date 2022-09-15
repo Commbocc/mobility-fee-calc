@@ -1,108 +1,61 @@
+<script setup lang="ts">
+import LookupForm from './components/LookupForm.vue'
+import CalcForm from './components/CalcForm.vue'
+import Results from './components/Results.vue'
+import { pricing } from './lib/pricing'
+
+const containerClass = import.meta.env.DEV
+  ? 'container my-5'
+  : 'container-fluid'
+</script>
+
 <template>
-  <div id="app">
-    <!-- <pre>{{ $data }}</pre> -->
+  <main :class="containerClass">
+    <h3>
+      Mobility/Impact Fee Calculator (Residential Only) -
+      {{ pricing?.year }} Schedule
+    </h3>
 
-    <h3>Mobility/Impact Fee Calculator (Residential Only) - {{ $pricing.year }} Schedule</h3>
+    <!--  -->
+    <LookupForm />
 
-    <form
-      is="HcEsriSearchForm"
-      ref="searchForm"
-      source-selector
-      @submit="resetDistricts"
-      @result="handleResult"
-    ></form>
-
-    <div class="form-group">
-      <div class="font-weight-bold">New Construction</div>
+    <!--  -->
+    <fieldset>
+      <legend>New Construction</legend>
 
       <div class="form-check">
         <input
-          v-model="isNewConstruction"
+          v-model="pricing.isNewConstruction"
           class="form-check-input"
           type="checkbox"
-          value
           id="newConstruction"
         />
-        <label
-          class="form-check-label"
-          for="newConstruction"
-        >This estimate is for a site with no existing home.</label>
+        <label class="form-check-label" for="newConstruction">
+          This estimate is for a site with no existing home.
+        </label>
       </div>
-    </div>
+    </fieldset>
 
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <form is="CalcForm" title="New Home" ref="formNew"></form>
+    <!--  -->
+    <fieldset>
+      <legend>Home Information</legend>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <CalcForm title="New Home" v-model="pricing.newPricing" />
+        </div>
+        <div v-show="!pricing.isNewConstruction" class="col-md-6">
+          <CalcForm
+            title="Existing Home"
+            existing
+            v-model="pricing.existingPricing"
+            ref="existingHome"
+          />
+        </div>
+        <div class="col">
+          <Results />
+        </div>
       </div>
-      <div v-if="!isNewConstruction" class="col-md-6">
-        <form is="CalcForm" title="Existing Home" is-exisitng ref="formExisting"></form>
-      </div>
-      <div class="col">
-        <div is="Results"></div>
-      </div>
-    </div>
-  </div>
+    </fieldset>
+  </main>
 </template>
-
-<script>
-import HcEsriSearchForm from '@hcflgov/vue-esri-search'
-import { CalcForm, Results } from './components'
-import DistrictLookup from './store/DistrictLookup'
-import Pricing from './store/pricing'
-
-export default {
-  install(Vue, options = {}) {
-    Vue.prototype.$pricing = new Pricing(options.year)
-
-    Vue.mixin({
-      components: {
-        HcMobilityFeeCalc: this
-      }
-    })
-  },
-  components: {
-    HcEsriSearchForm,
-    CalcForm,
-    Results
-  },
-  data: () => ({
-    mobilityAssessment: null,
-    parkSchoolAssessment: null,
-    isNewConstruction: true
-  }),
-  methods: {
-    resetDistricts() {
-      this.mobilityAssessment = null
-      this.parkSchoolAssessment = null
-    },
-    async handleResult(result) {
-      let lookup = new DistrictLookup(result)
-
-      try {
-        this.mobilityAssessment = await lookup.fetchMobilityDistrict()
-      } catch (err) {
-        // TODO: handle error
-        console.warn('fetchMobilityDistrict:', err)
-      }
-
-      try {
-        this.parkSchoolAssessment = await lookup.fetchParkSchoolDistrict()
-      } catch (err) {
-        // TODO: handle error
-        console.warn('fetchParkSchoolDistrict:', err)
-      }
-    }
-  },
-  watch: {
-    isNewConstruction() {
-      if (this.isNewConstruction && this.$refs.formExisting.reset()) {
-        // form's reset method confirms
-      } else {
-        this.$nextTick(() => {
-          this.isNewConstruction = false
-        })
-      }
-    }
-  }
-}
-</script>

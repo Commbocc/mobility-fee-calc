@@ -41,15 +41,14 @@ const containerClass = import.meta.env.DEV
       <legend>Home Information</legend>
 
       <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <CalcForm title="New Home" v-model="pricing.newPricing" />
         </div>
-        <div v-show="!pricing.isNewConstruction" class="col-md-6">
+        <div v-show="!pricing.isNewConstruction" class="col-sm-6">
           <CalcForm
             title="Existing Home"
             existing
             v-model="pricing.existingPricing"
-            ref="existingHome"
           />
         </div>
         <div class="col">

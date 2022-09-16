@@ -62,7 +62,7 @@ watch(subtotals, () => emit('update:modelValue', subtotals.value))
     </div>
 
     <div class="card-body">
-      <div class="form-group">
+      <div class="mb-3">
         <label>Housing Type</label>
         <select v-model="options.housingType" class="form-select">
           <option :value="null"></option>
@@ -72,7 +72,7 @@ watch(subtotals, () => emit('update:modelValue', subtotals.value))
         </select>
       </div>
 
-      <div class="form-group" :class="!isMobileHome ? 'text-muted' : null">
+      <div class="mb-3" :class="!isMobileHome ? 'text-muted' : null">
         <label>Mobile Home Park</label>
         <select
           v-model="options.mobilePark"
@@ -84,7 +84,7 @@ watch(subtotals, () => emit('update:modelValue', subtotals.value))
         </select>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label>Living Area Square Footage</label>
 
         <div class="input-group mb-1">
@@ -95,12 +95,11 @@ watch(subtotals, () => emit('update:modelValue', subtotals.value))
             :min="0"
             :step="50"
           />
-          <div class="input-group-append input-group-addon">
-            <span class="input-group-text">
-              ft
-              <sup>2</sup>
-            </span>
-          </div>
+
+          <span class="input-group-text">
+            ft
+            <sup>2</sup>
+          </span>
         </div>
 
         <input
@@ -114,7 +113,7 @@ watch(subtotals, () => emit('update:modelValue', subtotals.value))
         />
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label>Mobility Assessment District</label>
         <select v-model="district" class="form-select">
           <option :value="null"></option>

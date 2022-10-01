@@ -2,41 +2,41 @@ export const mobility = {
   'Single Family Detached': {
     Urban: [
       //[minSqFt, maxSqFt, price]
-      [0, 1499, 6542],
-      [1500, 2499, 7346],
-      [2500, Number.POSITIVE_INFINITY, 8440],
+      [0, 1499, 8178],
+      [1500, 2499, 9183],
+      [2500, Number.POSITIVE_INFINITY, 10550],
     ],
     Rural: [
       //[minSqFt, maxSqFt, price]
-      [0, 1499, 9306],
-      [1500, 2499, 10430],
-      [2500, Number.POSITIVE_INFINITY, 11950],
+      [0, 1499, 11633],
+      [1500, 2499, 13038],
+      [2500, Number.POSITIVE_INFINITY, 14938],
     ],
   },
   'Mobile Home': {
     Urban: [
       //[minSqFt, maxSqFt, price]
-      [0, Number.POSITIVE_INFINITY, 2764],
+      [0, Number.POSITIVE_INFINITY, 3455],
     ],
     Rural: [
       //[minSqFt, maxSqFt, price]
-      [0, Number.POSITIVE_INFINITY, 3908],
+      [0, Number.POSITIVE_INFINITY, 4885],
     ],
   },
 }
 
 export const park = [
   //[minSqFt, maxSqFt, price]
-  [0, 499, 658],
-  [500, 749, 953],
-  [750, 999, 1157],
-  [1000, 1249, 1316],
-  [1250, 1499, 1447],
-  [1500, 1999, 1656],
-  [2000, 2499, 1815],
-  [2500, 2999, 1945],
-  [3000, 3999, 2149],
-  [4000, Number.POSITIVE_INFINITY, 2320],
+  [0, 499, 777],
+  [500, 749, 1126],
+  [750, 999, 1368],
+  [1000, 1249, 1555],
+  [1250, 1499, 1710],
+  [1500, 1999, 1957],
+  [2000, 2499, 2145],
+  [2500, 2999, 2299],
+  [3000, 3999, 2540],
+  [4000, Number.POSITIVE_INFINITY, 2742],
 ]
 
 export const school = [

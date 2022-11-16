@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import LookupForm from './components/LookupForm.vue'
-import CalcForm from './components/CalcForm.vue'
-import Results from './components/Results.vue'
-import { pricing } from './lib/pricing'
+import LookupForm from "./components/LookupForm.vue";
+import CalcForm from "./components/CalcForm.vue";
+import Results from "./components/Results.vue";
+import { pricing } from "./lib/pricing";
 
 const containerClass = import.meta.env.DEV
-  ? 'container my-5'
-  : 'container-fluid'
+  ? "container my-5"
+  : "container-fluid";
 </script>
 
 <template>
   <main :class="containerClass">
-    <h3>
-      Mobility/Impact Fee Calculator (Residential Only) -
-      {{ pricing?.year }} Schedule
-    </h3>
+    <h3>Mobility/Impact Fee Calculator (Residential Only)</h3>
 
     <!--  -->
     <LookupForm />

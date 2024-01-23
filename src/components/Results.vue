@@ -5,7 +5,7 @@ const currency = (n: number) => (n > 0 ? "$" + n.toFixed(2) : "-");
 </script>
 
 <template>
-  <div class="card my-3">
+  <div class="card">
     <div
       class="card-header bg-secondary text-light d-flex align-items-center justify-content-between"
     >

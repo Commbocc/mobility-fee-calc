@@ -51,7 +51,7 @@ watch(subtotals, () => emit("update:modelValue", subtotals.value));
 </script>
 
 <template>
-  <form class="card my-3" @submit.prevent>
+  <form class="card" @submit.prevent>
     <div class="card-header d-flex align-items-center justify-content-between">
       <strong>{{ title }}</strong>
       <button

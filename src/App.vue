@@ -11,7 +11,7 @@ const containerClass = import.meta.env.DEV
 
 <template>
   <main :class="containerClass">
-    <h3 class="my-3">Mobility/Impact Fee Calculator (Residential Only)</h3>
+    <h3 class="mt-3">Mobility/Impact Fee Calculator (Residential Only)</h3>
 
     <!--  -->
     <LookupForm />
@@ -34,7 +34,7 @@ const containerClass = import.meta.env.DEV
     </fieldset>
 
     <!--  -->
-    <fieldset>
+    <fieldset class="mb-3">
       <legend>Home Information</legend>
 
       <div class="row justify-content-center">

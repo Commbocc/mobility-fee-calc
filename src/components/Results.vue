@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { grandTotals } from '../lib/pricing'
+import { grandTotals } from "../lib/pricing";
 
-const currency = (n: number) => (n > 0 ? '$' + n.toFixed(2) : '-')
+const currency = (n: number) => (n > 0 ? "$" + n.toFixed(2) : "-");
 </script>
 
 <template>
-  <div class="card mb-3">
+  <div class="card my-3">
     <div
       class="card-header bg-secondary text-light d-flex align-items-center justify-content-between"
     >

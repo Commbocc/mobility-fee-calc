@@ -1,54 +1,57 @@
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue'
-import { calculatePricing } from '../lib/pricing'
-import { district } from '../lib/districts'
-import { housingTypes, mobilityAssessmentDistricts } from '../lib/selectOptions'
+import { computed, reactive, watch } from "vue";
+import { calculatePricing } from "../lib/pricing";
+import { district } from "../lib/districts";
+import {
+  housingTypes,
+  mobilityAssessmentDistricts,
+} from "../lib/selectOptions";
 
 const props = defineProps<{
-  title: string
-  existing?: boolean
-  modelValue: ISubtotal
-}>()
+  title: string;
+  existing?: boolean;
+  modelValue: ISubtotal;
+}>();
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(["update:modelValue"]);
 
 const options = reactive<CalcFormOptions>({
   housingType: null,
   squareFootage: null,
   mobilePark: null,
-})
+});
 
-const isMobileHome = computed(() => options.housingType == 'Mobile Home')
+const isMobileHome = computed(() => options.housingType == "Mobile Home");
 
-const subtotals = computed<ISubtotal>(() => calculatePricing(options))
+const subtotals = computed<ISubtotal>(() => calculatePricing(options));
 
 const reset = () => {
   if (
     confirm(
-      `Are you sure? This will remove the selections made in "${props.title}"`
+      `Are you sure? This will remove the selections made in "${props.title}"`,
     )
   ) {
-    options.housingType = null
-    options.squareFootage = null
-    options.mobilePark = null
-    return true
+    options.housingType = null;
+    options.squareFootage = null;
+    options.mobilePark = null;
+    return true;
   } else {
-    return false
+    return false;
   }
-}
+};
 
 watch(
   () => options.housingType,
   () => {
-    options.mobilePark = isMobileHome.value ? true : null
-  }
-)
+    options.mobilePark = isMobileHome.value ? true : null;
+  },
+);
 
-watch(subtotals, () => emit('update:modelValue', subtotals.value))
+watch(subtotals, () => emit("update:modelValue", subtotals.value));
 </script>
 
 <template>
-  <form class="card mb-3" @submit.prevent>
+  <form class="card my-3" @submit.prevent>
     <div class="card-header d-flex align-items-center justify-content-between">
       <strong>{{ title }}</strong>
       <button

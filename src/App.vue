@@ -6,7 +6,7 @@ import { pricing } from "./lib/pricing";
 
 const containerClass = import.meta.env.DEV
   ? "container my-5"
-  : "container-fluid mt-2";
+  : "container-fluid pt-2";
 </script>
 
 <template>

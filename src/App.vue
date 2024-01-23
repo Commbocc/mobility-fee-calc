@@ -6,12 +6,12 @@ import { pricing } from "./lib/pricing";
 
 const containerClass = import.meta.env.DEV
   ? "container my-5"
-  : "container-fluid";
+  : "container-fluid mt-2";
 </script>
 
 <template>
   <main :class="containerClass">
-    <h3 class="mt-3">Mobility/Impact Fee Calculator (Residential Only)</h3>
+    <h3>Mobility/Impact Fee Calculator (Residential Only)</h3>
 
     <!--  -->
     <LookupForm />

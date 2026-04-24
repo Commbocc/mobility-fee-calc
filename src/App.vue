@@ -11,7 +11,7 @@ const containerClass = import.meta.env.DEV
 
 <template>
   <main :class="containerClass">
-    <h3>Mobility/Impact Fee Calculator (Residential Only)</h3>
+    <h1>Mobility/Impact Fee Calculator (Residential Only)</h1>
     <p>Search by address to determine the mobility assessment district.</p>
 
     <!--  -->

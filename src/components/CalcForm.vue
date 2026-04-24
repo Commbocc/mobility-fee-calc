@@ -54,11 +54,7 @@ watch(subtotals, () => emit("update:modelValue", subtotals.value));
   <form class="card" @submit.prevent>
     <div class="card-header d-flex align-items-center justify-content-between">
       <strong>{{ title }}</strong>
-      <button
-        @click.prevent="reset"
-        type="button"
-        class="btn btn-sm btn-outline-warning"
-      >
+      <button @click.prevent="reset" type="button" class="btn btn-danger">
         <span class="fas fa-history" aria-hidden="true"></span>
         Reset
       </button>
@@ -66,8 +62,13 @@ watch(subtotals, () => emit("update:modelValue", subtotals.value));
 
     <div class="card-body">
       <div class="mb-3">
-        <label>Housing Type</label>
-        <select v-model="options.housingType" class="form-select">
+        <label for="housingType">Housing Type</label>
+        <select
+          v-model="options.housingType"
+          class="form-select"
+          name="housing-type"
+          id="housingType"
+        >
           <option :value="null"></option>
           <option v-for="(option, index) in housingTypes" :key="index">
             {{ option }}
@@ -76,10 +77,12 @@ watch(subtotals, () => emit("update:modelValue", subtotals.value));
       </div>
 
       <div class="mb-3" :class="!isMobileHome ? 'text-muted' : null">
-        <label>Mobile Home Park</label>
+        <label for="mobileHomePark">Mobile Home Park</label>
         <select
           v-model="options.mobilePark"
           class="form-select"
+          name="mobile-home-park"
+          id="mobileHomePark"
           :disabled="!isMobileHome"
         >
           <option :value="true">In a Park</option>
@@ -88,13 +91,15 @@ watch(subtotals, () => emit("update:modelValue", subtotals.value));
       </div>
 
       <div class="mb-3">
-        <label>Living Area Square Footage</label>
+        <label for="livingAreaSquareFootage">Living Area Square Footage</label>
 
         <div class="input-group mb-1">
           <input
             type="number"
             v-model="options.squareFootage"
             class="form-control text-right"
+            id="livingAreaSquareFootage"
+            name="living-area-square-footage"
             :min="0"
             :step="50"
           />
@@ -113,12 +118,21 @@ watch(subtotals, () => emit("update:modelValue", subtotals.value));
           max="4000"
           step="50"
           class="form-control-range"
+          id="livingAreaSquareFootage"
+          name="living-area-square-footage"
         />
       </div>
 
       <div class="mb-3">
-        <label>Mobility Assessment District</label>
-        <select v-model="district" class="form-select">
+        <label for="mobilityAssessmentDistrict"
+          >Mobility Assessment District</label
+        >
+        <select
+          v-model="district"
+          class="form-select"
+          id="mobilityAssessmentDistrict"
+          name="mobility-assessment-district"
+        >
           <option :value="null"></option>
           <option
             v-for="(option, index) in mobilityAssessmentDistricts"

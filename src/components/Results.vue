@@ -7,7 +7,7 @@ const currency = (n: number) => (n > 0 ? "$" + n.toFixed(2) : "-");
 <template>
   <div class="card">
     <div
-      class="card-header bg-secondary text-light d-flex align-items-center justify-content-between"
+      class="card-header bg-black text-light d-flex align-items-center justify-content-between"
     >
       <strong>Balance Due</strong>
     </div>
